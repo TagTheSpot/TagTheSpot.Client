@@ -10,9 +10,16 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.http.post<{ accessToken: string; refreshToken: string }>(
-      'https://localhost:58245/api/login',
+      'https://localhost:63991/api/login',
       { email, password }
     );
+  }
+
+  register(email: string, password: string) {
+    return this.http.post(
+      'https://localhost:63991/api/register',
+      { email, password }
+    )
   }
 
   storeTokens(access: string, refresh: string) {
