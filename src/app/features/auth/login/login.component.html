@@ -1,0 +1,53 @@
+<div class="login-container">
+  <h2>Вхід</h2>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    @let email = form.controls.email;
+    @let password = form.controls.password;
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" formControlName="email" />
+
+    @if (email.touched && email.invalid) {
+      <ul class="errors-list">
+        @if (email.errors?.['required']) {
+          <li class="error-message">Електронна пошта обов'язкова.</li>
+        }
+        @if (email.errors?.['email']) {
+          <li class="error-message">Неправильний формат електронної пошти.</li>
+        }
+        @if (email.errors?.['maxlength']) {
+          <li class="error-message">Довжина електронної пошти не має перевищувати 100 символів.</li>
+        }
+      </ul>
+    }
+
+    <label for="password">Пароль</label>
+    <input type="password" id="password" name="password" formControlName="password" />
+
+    @if (password.touched && password.invalid) {
+      <ul class="errors-list">
+        @if (password.errors?.['required']) {
+          <li class="error-message">Пароль обов'язковий.</li>
+        }
+        @if (password.errors?.['minlength']) {
+          <li class="error-message">Довжина пароля має бути щонайменше 8 символів.</li>
+        }
+        @if (password.errors?.['maxlength']) {
+          <li class="error-message">Довжина пароля не має перевищувати 30 символів.</li>
+        }
+        @if (password.errors?.['pattern']) {
+          <li class="error-message">Пароль повинен в собі мати щонайменше одну латинську велику літеру.</li>
+          <li class="error-message">Пароль повинен в собі мати щонайменше одну латинську маленьку літеру.</li>
+          <li class="error-message">Пароль повинен в собі мати щонайменше одну цифру.</li>
+          <li class="error-message">Пароль повинен в собі мати щонайменше один спеціальний символ.</li>
+        }
+      </ul>
+    }
+
+    @if (errorMessage) {
+      <span class="error-message">{{ errorMessage }}</span>
+    }
+
+    <button type="submit">Увійти</button>
+  </form>
+</div>
