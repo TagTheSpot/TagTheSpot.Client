@@ -1,8 +1,9 @@
-<div class="login-container">
-  <h2>Вхід</h2>
+<div class="register-container">
+  <h2>Реєстрація</h2>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     @let email = form.controls.email;
     @let password = form.controls.password;
+    @let confirmPassword = form.controls.confirmPassword;
 
     <label for="email">Email</label>
     <input type="email" id="email" name="email" formControlName="email" />
@@ -44,12 +45,21 @@
       </ul>
     }
 
+    <label for="confirmPassword">Повтор Пароля</label>
+    <input type="password" id="confirmPassword" formControlName="confirmPassword" />
+
+    @if (confirmPassword.touched && form.errors?.['passwordMismatch']) {
+      <ul class="errors-list">
+          <li class="error-message">Паролі повинні збігатися.</li>
+      </ul>
+    }
+
     @if (errorMessage) {
       <span class="error-message">{{ errorMessage }}</span>
     }
 
-    <button type="submit">Увійти</button>
+    <button type="submit">Зареєструватися</button>
 
-    <a id="register-link" routerLink="/register">Зареєструватися</a>
+    <a id="login-link" routerLink="/login">Вхід в акаунт</a>
   </form>
 </div>
