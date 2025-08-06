@@ -10,14 +10,14 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.http.post<{ accessToken: string; refreshToken: string }>(
-      'https://localhost:63991/api/login',
+      'https://localhost:18001/api/login',
       { email, password }
     );
   }
 
   register(email: string, password: string) {
     return this.http.post(
-      'https://localhost:63991/api/register',
+      'https://localhost:18001/api/register',
       { email, password }
     )
   }
