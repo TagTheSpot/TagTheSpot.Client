@@ -1,0 +1,22 @@
+<div class="main-container">
+  <h1>Знайди скейт-спот у своєму місті</h1>
+
+  <label for="city-input">Місто</label>
+  <input
+    type="text"
+    id="city-input"
+    placeholder="Почни вводити назву міста..."
+    [formControl]="searchControl"
+    autocomplete="off"
+  />
+
+  @if (suggestions) {
+    <ul class="suggestions-list">
+       @for (city of suggestions; track city.name) {
+         <li (click)="selectCity(city)" class="suggestion-item">
+            {{ city.name }}
+         </li>
+       } 
+    </ul>
+  }
+</div>
