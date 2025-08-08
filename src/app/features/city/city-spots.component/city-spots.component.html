@@ -1,0 +1,22 @@
+<div class="spots-grid">
+  @for (spot of spots; track $index) {
+    <div class="spot-card">
+      <div class="spot-image-wrapper">
+        <img
+          [src]="spot.imagesUrls[0]"
+          alt="Spot image"
+          class="spot-image"
+        />
+      </div>
+
+      <div class="spot-info">
+        <h3 class="spot-type">{{ spot.type }}</h3>
+        <p class="spot-description">{{ spot.description }}</p>
+
+        @if (spot.skillLevel) {
+          <span class="spot-skill">{{ spot.skillLevel }}</span>
+        }
+      </div>
+    </div>
+  }
+</div>
