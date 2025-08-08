@@ -10,6 +10,10 @@ export class SpotService {
   httpClient: HttpClient = inject(HttpClient);
 
   getSpotsByCityId(cityId: string) : Observable<SpotResponse[]> {
-    return this.httpClient.get<SpotResponse[]>(`https://localhost:18002/api/cities/${cityId}/spots`)
+    return this.httpClient.get<SpotResponse[]>(`https://localhost:18002/api/cities/${cityId}/spots`);
+  }
+
+  getSpotById(spotId: string) : Observable<SpotResponse> {
+    return this.httpClient.get<SpotResponse>(`https://localhost:18002/api/spots/${spotId}`);
   }
 }
