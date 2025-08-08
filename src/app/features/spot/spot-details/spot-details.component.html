@@ -1,0 +1,32 @@
+@if (spot) {
+    <div class="spot-details-container">
+        <h1 class="spot-title">{{ spot.type }}</h1>
+
+        <div class="spot-main">
+            <div class="spot-images">
+                @for (image of spot.imagesUrls; track $index) {
+                    <img
+                    [src]="image"
+                    alt="Spot image"
+                    class="spot-image"
+                    />
+                }
+            </div>
+
+            <div class="spot-info">
+                <p class="spot-description">{{ spot.description }}</p>
+                <ul class="spot-meta">
+                    <li><strong>Skill Level:</strong> {{ spot.skillLevel || 'N/A' }}</li>
+                    <li><strong>Covered:</strong> {{ spot.isCovered === null ? 'Unknown' : (spot.isCovered ? 'Yes' : 'No') }}</li>
+                    <li><strong>Lighting:</strong> {{ spot.lighting === null ? 'Unknown' : (spot.lighting ? 'Yes' : 'No') }}</li>
+                    <li><strong>Accessibility:</strong> {{ spot.accessibility || 'Unknown' }}</li>
+                    <li><strong>Condition:</strong> {{ spot.condition || 'Unknown' }}</li>
+                    <li><strong>Coordinates:</strong> {{ spot.latitude }}, {{ spot.longitude }}</li>
+                    <li><strong>Created At:</strong> {{ spot.createdAt | date:'mediumDate' }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+
+

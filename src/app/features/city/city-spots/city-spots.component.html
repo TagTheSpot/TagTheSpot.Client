@@ -1,6 +1,6 @@
 <div class="spots-grid">
   @for (spot of spots; track $index) {
-    <div class="spot-card">
+    <div class="spot-card" (click)="navigateToSpotDetails(spot)">
       <div class="spot-image-wrapper">
         <img
           [src]="spot.imagesUrls[0]"

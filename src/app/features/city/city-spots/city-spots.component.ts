@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SpotResponse } from '../../../core/spot/spot.model';
 import { SpotService } from '../../../core/spot/spot.service';
 
@@ -13,6 +13,7 @@ export class CitySpotsComponent implements OnInit {
   cityId: string = '';
   spots: SpotResponse[] = [];
   spotService: SpotService = inject(SpotService);
+  router: Router = inject(Router);
 
   constructor(private route: ActivatedRoute) {}
 
@@ -32,5 +33,9 @@ export class CitySpotsComponent implements OnInit {
         error: (err) => console.error(err)
       });
     });
+  }
+
+  navigateToSpotDetails(spot: SpotResponse) {
+    this.router.navigate(['/spots', spot.id], { state: { spot } });
   }
 }
