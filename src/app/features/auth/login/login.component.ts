@@ -44,8 +44,10 @@ export class LoginComponent {
     const { email, password } = this.form.getRawValue();
 
     this.authService.login(email, password).subscribe({
-      next: () => {
+      next: (res) => {
         this.router.navigate(['/']);
+        this.authService.storeTokens(
+          res.accessToken, res.refreshToken);
       },
       error: () => {
         this.errorMessage = 'Невірна електронна пошта або пароль.';

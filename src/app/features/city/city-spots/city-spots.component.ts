@@ -1,11 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SpotResponse } from '../../../core/spot/spot.model';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { SpotResponse } from '../../../core/spot/spot-response.model';
 import { SpotService } from '../../../core/spot/spot.service';
 
 @Component({
   selector: 'app-city-spots',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './city-spots.component.html',
   styleUrl: './city-spots.component.scss'
 })
