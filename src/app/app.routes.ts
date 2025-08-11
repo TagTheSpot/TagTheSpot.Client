@@ -28,13 +28,13 @@ export const routes: Routes = [
         component: CitySpotsComponent
     },
     {
+        path: 'cities/:id/spots/add',
+        pathMatch: 'full',
+        component: AddSpotComponent
+    },
+    {
         path: 'spots/:id',
         pathMatch: 'full',
         component: SpotDetailsComponent
     },
-    {
-        path: 'spots/add',
-        pathMatch: 'full',
-        component: AddSpotComponent
-    }
 ];

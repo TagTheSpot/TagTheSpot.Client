@@ -5,7 +5,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-  private accessToken: string | null = null;
+  private accessTokenKey = 'accessToken';
+
   constructor(private http: HttpClient) {}
 
   login(email: string, password: string) {
@@ -23,16 +24,17 @@ export class AuthService {
   }
 
   storeTokens(access: string, refresh: string) {
-    this.accessToken = access;
+    localStorage.setItem(this.accessTokenKey, access);
     localStorage.setItem('refreshToken', refresh);
   }
 
   getAccessToken(): string | null {
-    return this.accessToken;
+    return localStorage.getItem(this.accessTokenKey);
   }
 
   logout() {
-    this.accessToken = null;
+    localStorage.removeItem(this.accessTokenKey);
     localStorage.removeItem('refreshToken');
   }
 }
+
