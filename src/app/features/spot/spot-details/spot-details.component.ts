@@ -1,5 +1,5 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { SpotResponse } from '../../../core/spot/spot.model';
+import { SpotResponse } from '../../../core/spot/spot-response.model';
 import { ActivatedRoute } from '@angular/router';
 import { SpotService } from '../../../core/spot/spot.service';
 import { DatePipe } from '@angular/common';

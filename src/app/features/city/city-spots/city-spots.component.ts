@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SpotResponse } from '../../../core/spot/spot.model';
+import { SpotResponse } from '../../../core/spot/spot-response.model';
 import { SpotService } from '../../../core/spot/spot.service';
 
 @Component({

@@ -4,6 +4,7 @@ import { RegisterComponent } from './features/auth/register/register.component';
 import { MainPageComponent } from './features/main/main-page.component';
 import { CitySpotsComponent } from './features/city/city-spots/city-spots.component';
 import { SpotDetailsComponent } from './features/spot/spot-details/spot-details.component';
+import { AddSpotComponent } from './features/spot/add-spot/add-spot.component';
 
 export const routes: Routes = [
     {
@@ -30,5 +31,10 @@ export const routes: Routes = [
         path: 'spots/:id',
         pathMatch: 'full',
         component: SpotDetailsComponent
+    },
+    {
+        path: 'spots/add',
+        pathMatch: 'full',
+        component: AddSpotComponent
     }
 ];
