@@ -19,6 +19,18 @@ export class SpotService {
   }
 
   addSpot(request: SpotRequest) : Observable<string> {
+    const formData = this.buildSpotRequestObject(request);
+
+    return this.httpClient.post<string>('https://localhost:18002/api/spots', formData);
+  }
+
+  submitSpot(request: SpotRequest) : Observable<string> {
+    const formData = this.buildSpotRequestObject(request);
+
+    return this.httpClient.post<string>('https://localhost:18002/api/spots/submit', formData);
+  }
+
+  private buildSpotRequestObject(request: SpotRequest) : FormData {
     const formData = new FormData();
 
     formData.append('cityId', request.cityId);
@@ -47,6 +59,6 @@ export class SpotService {
       formData.append('images', file, file.name); 
     });
 
-    return this.httpClient.post<string>('https://localhost:18002/api/spots', formData);
+    return formData;
   }
 }

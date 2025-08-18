@@ -1,0 +1,112 @@
+<div class="add-spot-container">
+  <h2>Submit New Spot</h2>
+
+  <form (ngSubmit)="onSubmit()" #spotForm="ngForm">
+
+    <label for="latitude">Latitude</label>
+    <input
+      type="number"
+      id="latitude"
+      name="latitude"
+      step="any"
+      [(ngModel)]="spotRequest.latitude"
+      required
+    />
+
+    <label for="longitude">Longitude</label>
+    <input
+      type="number"
+      id="longitude"
+      name="longitude"
+      step="any"
+      [(ngModel)]="spotRequest.longitude"
+      required
+    />
+
+    <label for="spotType">Spot Type</label>
+    <select
+      id="spotType"
+      name="spotType"
+      [(ngModel)]="spotRequest.type"
+      required
+    >
+      <option value="Street">Street</option>
+      <option value="Park">Park</option>
+      <option value="Indoor">Indoor</option>
+    </select>
+
+    <label for="description">Description</label>
+    <textarea
+      id="description"
+      name="description"
+      [(ngModel)]="spotRequest.description"
+    ></textarea>
+
+    <label for="skillLevel">Skill Level</label>
+    <select
+      id="skillLevel"
+      name="skillLevel"
+      [(ngModel)]="spotRequest.skillLevel"
+    >
+      <option [ngValue]="null">Select skill level</option>
+      <option value="Beginner">Beginner</option>
+      <option value="Intermediate">Intermediate</option>
+      <option value="Advanced">Advanced</option>
+    </select>
+
+    <label class="checkbox-label">
+      <input
+        type="checkbox"
+        name="isCovered"
+        [(ngModel)]="spotRequest.isCovered"
+      />
+      Covered
+    </label>
+
+    <label class="checkbox-label">
+      <input
+        type="checkbox"
+        name="lighting"
+        [(ngModel)]="spotRequest.lighting"
+      />
+      Has Lighting
+    </label>
+
+    <label for="accessibility">Accessibility</label>
+    <select
+      id="accessibility"
+      name="accessibility"
+      [(ngModel)]="spotRequest.accessibility"
+    >
+      <option [ngValue]="null">Select accessibility</option>
+      <option value="Public">Public</option>
+      <option value="Private">Private</option>
+      <option value="Restricted">Restricted</option>
+    </select>
+
+    <label for="condition">Condition</label>
+    <select
+      id="condition"
+      name="condition"
+      [(ngModel)]="spotRequest.condition"
+    >
+      <option [ngValue]="null">Select condition</option>
+      <option value="New">New</option>
+      <option value="Good">Good</option>
+      <option value="Worn">Worn</option>
+      <option value="Damaged">Damaged</option>
+    </select>
+
+    <label for="images">Images</label>
+    <input
+      type="file"
+      id="images"
+      (change)="onFilesSelected($event)"
+      multiple
+    />
+
+    <button type="submit" [disabled]="!spotForm.form.valid">
+      Submit Spot
+    </button>
+  </form>
+</div>
