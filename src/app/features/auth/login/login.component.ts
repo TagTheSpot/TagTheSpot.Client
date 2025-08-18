@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/auth/auth.service';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,10 +9,12 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   authService = inject(AuthService);
   router = inject(Router);
-  errorMessage: string | null = null; 
+  route = inject(ActivatedRoute); 
+  errorMessage: string | null = null;
+  returnUrl: string | null = null;
 
   protected form = new FormGroup({
     email: new FormControl<string>('', {
@@ -34,6 +36,10 @@ export class LoginComponent {
     })
   });
 
+  ngOnInit(): void {
+    this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+  }
+
   onSubmit() {
     this.form.markAllAsTouched();
 
@@ -45,7 +51,8 @@ export class LoginComponent {
 
     this.authService.login(email, password).subscribe({
       next: (res) => {
-        this.router.navigate(['/']);
+        this.router.navigateByUrl(this.returnUrl || '/');
+
         this.authService.storeTokens(
           res.accessToken, res.refreshToken);
       },

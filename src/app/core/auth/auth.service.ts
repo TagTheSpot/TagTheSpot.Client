@@ -36,5 +36,22 @@ export class AuthService {
     localStorage.removeItem(this.accessTokenKey);
     localStorage.removeItem('refreshToken');
   }
+
+  hasAnyRole(roles: string[]): boolean {
+    const token = this.getAccessToken();
+    if (!token) return false;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const userRoles: string[] = payload['role'] || [];
+      return roles.some(r => userRoles.includes(r));
+    } catch {
+      return false;
+    }
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.getAccessToken();
+  }
 }
 
