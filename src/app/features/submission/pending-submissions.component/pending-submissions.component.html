@@ -1,0 +1,27 @@
+<div class="pending-submissions">
+  <h2>Pending Submissions</h2>
+
+  @if (pendingSubmissions === null) {
+    <div class="loading">
+        Loading submissions...
+    </div>
+  }
+  
+  @if (pendingSubmissions && pendingSubmissions.length === 0) {
+    <div class="empty">
+        No pending submissions 🎉
+    </div>
+  }
+  @else {
+    <ul class="submission-list">
+        @for (submission of pendingSubmissions; track $index) {
+        <div class="submission-info">
+          <p>Date: {{ submission.submittedAt | date:'short' }}</p>
+        </div>
+        <button class="view-btn" (click)="router.navigate(['/submissions', submission.id])">
+          View
+        </button>
+        }
+    </ul>
+  }
+</div>

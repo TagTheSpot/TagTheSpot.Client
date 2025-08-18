@@ -1,0 +1,73 @@
+.pending-submissions {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #333;
+  }
+
+  .loading,
+  .empty {
+    text-align: center;
+    font-size: 1rem;
+    color: #777;
+    padding: 2rem 0;
+  }
+
+  .submission-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    .submission-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f9f9f9;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      border-radius: 8px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: #f1f1f1;
+      }
+
+      .submission-info {
+        h3 {
+          margin: 0 0 0.25rem;
+          font-size: 1.2rem;
+          color: #222;
+        }
+
+        p {
+          margin: 0.2rem 0;
+          color: #555;
+          font-size: 0.9rem;
+        }
+      }
+
+      .view-btn {
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+
+        &:hover {
+          background: #0056b3;
+        }
+      }
+    }
+  }
+}
