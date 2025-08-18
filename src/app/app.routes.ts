@@ -7,6 +7,7 @@ import { SpotDetailsComponent } from './features/spot/spot-details/spot-details.
 import { AddSpotComponent } from './features/spot/add-spot/add-spot.component';
 import { PendingSubmissionsComponent } from './features/submission/pending-submissions.component/pending-submissions.component';
 import { authGuard } from './core/auth/auth.guard';
+import { ForbiddenComponent } from './features/forbidden/forbidden.component';
 
 export const routes: Routes = [
     {
@@ -51,6 +52,6 @@ export const routes: Routes = [
     {
         path: 'forbidden',
         pathMatch: 'full',
-        component: MainPageComponent //placeholder
+        component: ForbiddenComponent
     },
 ];
