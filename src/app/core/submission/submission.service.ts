@@ -12,4 +12,8 @@ export class SubmissionService {
   getPendingSubmissions() : Observable<SubmissionResponse[]> {
     return this.httpClient.get<SubmissionResponse[]>('https://localhost:18003/api/submissions/pending');
   }
+
+  getCurrentUserSubmissions() : Observable<SubmissionResponse[]> {
+    return this.httpClient.get<SubmissionResponse[]>('https://localhost:18003/api/submissions/mine');
+  }
 }
