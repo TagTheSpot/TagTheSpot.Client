@@ -5,10 +5,11 @@ import { MainPageComponent } from './features/main/main-page.component';
 import { CitySpotsComponent } from './features/city/city-spots/city-spots.component';
 import { SpotDetailsComponent } from './features/spot/spot-details/spot-details.component';
 import { AddSpotComponent } from './features/spot/add-spot/add-spot.component';
-import { PendingSubmissionsComponent } from './features/submission/pending-submissions.component/pending-submissions.component';
+import { PendingSubmissionsComponent } from './features/submission/pending-submissions/pending-submissions.component';
 import { authGuard } from './core/auth/auth.guard';
 import { ForbiddenComponent } from './features/forbidden/forbidden.component';
 import { SubmitSpotComponent } from './features/spot/submit-spot/submit-spot.component';
+import { MySubmissionsComponent } from './features/submission/my-submissions/my-submissions.component';
 
 export const routes: Routes = [
     {
@@ -47,6 +48,12 @@ export const routes: Routes = [
         path: 'spots/:id',
         pathMatch: 'full',
         component: SpotDetailsComponent
+    },
+    {
+        path: 'submissions',
+        pathMatch: 'full',
+        component: MySubmissionsComponent,
+        canActivate: [authGuard]
     },
     {
         path: 'submissions/pending',

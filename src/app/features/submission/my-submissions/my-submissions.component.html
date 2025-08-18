@@ -1,0 +1,33 @@
+<div class="submissions-container">
+  <h1>My Submissions</h1>
+
+  @if (!submissions?.length) {
+    <div class="empty-message">
+        You haven't submitted any spots yet.
+    </div>
+  }
+  @else {
+    <div class="submissions-grid">
+        @for (submission of submissions; track $index) {
+            <div class="submission-card">
+                <div class="submission-images">
+                    @for (url of submission.imagesUrls; track $index) {
+                        <img [src]="url" alt="Spot image" />
+                    }
+                </div>
+
+                <div class="submission-info">
+                    <h2>{{ submission.cityName }} ({{ submission.spotType }})</h2>
+                    <p><strong>Submitted:</strong> {{ submission.submittedAt | date:'medium' }}</p>
+                    <p><strong>Skill Level:</strong> {{ submission.skillLevel || 'N/A' }}</p>
+                    <p><strong>Accessibility:</strong> {{ submission.accessibility || 'N/A' }}</p>
+                    <p><strong>Condition:</strong> {{ submission.condition || 'N/A' }}</p>
+                    <p><strong>Covered:</strong> {{ submission.isCovered ? 'Yes' : 'No' }}</p>
+                    <p><strong>Lighting:</strong> {{ submission.lighting ? 'Yes' : 'No' }}</p>
+                    <p class="description">{{ submission.description }}</p>
+                </div>
+            </div>
+        }
+    </div>
+  }
+</div>
