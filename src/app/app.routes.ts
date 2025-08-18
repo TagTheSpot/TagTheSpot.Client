@@ -8,6 +8,7 @@ import { AddSpotComponent } from './features/spot/add-spot/add-spot.component';
 import { PendingSubmissionsComponent } from './features/submission/pending-submissions.component/pending-submissions.component';
 import { authGuard } from './core/auth/auth.guard';
 import { ForbiddenComponent } from './features/forbidden/forbidden.component';
+import { SubmitSpotComponent } from './features/spot/submit-spot/submit-spot.component';
 
 export const routes: Routes = [
     {
@@ -36,6 +37,11 @@ export const routes: Routes = [
         component: AddSpotComponent,
         canActivate: [authGuard],
         data: { roles: ['Admin', 'Owner'] }
+    },
+    {
+        path: 'cities/:id/spots/submit',
+        pathMatch: 'full',
+        component: SubmitSpotComponent
     },
     {
         path: 'spots/:id',

@@ -1,5 +1,5 @@
 <div class="spots-grid">
-  <a [routerLink]="`/cities/${cityId}/spots/add`">Додати новий спот!</a>
+  <a [routerLink]="`/cities/${cityId}/spots/submit`">Додати новий спот!</a>
 
   @for (spot of spots; track $index) {
     <div class="spot-card" (click)="navigateToSpotDetails(spot)">
