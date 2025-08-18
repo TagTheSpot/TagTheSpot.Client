@@ -1,0 +1,53 @@
+.forbidden-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #f44336, #ff7961);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff;
+  text-align: center;
+
+  .forbidden-content {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 3rem 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    max-width: 450px;
+
+    h1 {
+      font-size: 6rem;
+      margin: 0;
+      font-weight: bold;
+      color: #ffebee;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin: 0.5rem 0 1rem 0;
+      color: #ffccbc;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      color: #ffe0b2;
+    }
+
+    .btn-home {
+      text-decoration: none;
+      color: #f44336;
+      background: #fff;
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: #f44336;
+        color: #fff;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+}
