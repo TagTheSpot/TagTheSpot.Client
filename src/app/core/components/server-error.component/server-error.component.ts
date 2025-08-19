@@ -7,6 +7,4 @@ import { RouterModule } from '@angular/router';
   templateUrl: './server-error.component.html',
   styleUrl: './server-error.component.scss'
 })
-export class ServerErrorComponent {
-
-}
+export class ServerErrorComponent {}
