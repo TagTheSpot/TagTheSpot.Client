@@ -1,4 +1,22 @@
-html, body {
+@font-face {
+  font-family: 'Exo 2';
+  src: url('/fonts/Exo2/Exo2-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+html {
   margin: 0;
   padding: 0;
+  height: 100%;
+}
+
+html {
+  background-image: url('/images/background.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+* {
+  font-family: 'Exo 2', sans-serif;
 }
