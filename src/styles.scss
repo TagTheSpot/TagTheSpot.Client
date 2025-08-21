@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 @font-face {
   font-family: 'Exo 2';
   src: url('/fonts/Exo2/Exo2-VariableFont_wght.ttf') format('truetype');
@@ -5,18 +7,17 @@
   font-style: normal;
 }
 
-html {
+html, body {
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height: 100vh;
+  height: auto;
 }
 
 html {
   background-image: url('/images/background.png');
   background-size: cover;
   background-repeat: no-repeat;
-}
-
-* {
   font-family: 'Exo 2', sans-serif;
+  color: #383838;
 }

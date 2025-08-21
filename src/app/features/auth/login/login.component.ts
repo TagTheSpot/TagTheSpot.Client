@@ -38,6 +38,9 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+    this.form.valueChanges.subscribe(() => {
+      this.errorMessage = '';
+    })
   }
 
   onSubmit() {
@@ -56,8 +59,13 @@ export class LoginComponent implements OnInit {
         this.authService.storeTokens(
           res.accessToken, res.refreshToken);
       },
-      error: () => {
-        this.errorMessage = 'Невірна електронна пошта або пароль.';
+      error: (res) => {
+        if (res.error.detail == 'The provided credentials are invalid.') {
+          this.errorMessage = 'Неправильна електронна пошта або пароль.';
+        }
+        else {
+          this.errorMessage = 'Будь ласка, спробуйте пізніше.';
+        }
       }
     });
   }
