@@ -1,22 +1,41 @@
-<div class="main-container">
-  <h1>Знайди скейт-спот у своєму місті</h1>
+<div class="
+  main-container min-h-screen 
+  bg-cover bg-center bg-no-repeat bg-[url(/images/main-page-bg-image.png)]
+  flex flex-col items-center justify-center gap-7 px-4
+">
+  <h1 class="font-light text-3xl lg:text-5xl text-center">
+    Швидкий пошук спотів у містах України
+  </h1>
 
-  <label for="city-input">Місто</label>
-  <input
-    type="text"
-    id="city-input"
-    placeholder="Почни вводити назву міста..."
-    [formControl]="searchControl"
-    autocomplete="off"
-  />
+  <div class="relative w-full sm:w-1/3">
+    <input
+      class="
+        border-2 border-gray-300 
+        rounded-3xl px-5 py-2 w-full 
+        lg:text-xl lg:font-light lg:px-6 lg:py-2.5 
+        placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400
+      "
+      type="text"
+      id="city-input"
+      placeholder="Почніть вводити місто..."
+      [formControl]="searchControl"
+      autocomplete="off"
+    />
 
-  @if (suggestions) {
-    <ul class="suggestions-list">
-       @for (city of suggestions; track city.name) {
-         <li (click)="selectCity(city)" class="suggestion-item">
+    @if (suggestions.length > 0) {
+      <ul
+        class="absolute z-10 w-full mt-1 bg-white border border-gray-200 
+               rounded-xl shadow-lg max-h-[30vh] overflow-y-scroll"
+      >
+        @for (city of suggestions; track city.name) {
+          <li
+            (click)="selectCity(city)"
+            class="px-4 py-2 cursor-pointer hover:bg-gray-100 transition-colors"
+          >
             {{ city.name }}
-         </li>
-       } 
-    </ul>
-  }
+          </li>
+        }
+      </ul>
+    }
+  </div>
 </div>
