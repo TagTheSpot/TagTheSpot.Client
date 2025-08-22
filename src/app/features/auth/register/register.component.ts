@@ -66,8 +66,13 @@ export class RegisterComponent {
       next: () => {
         this.router.navigate(['login']);
       },
-      error: () => {
-        this.errorMessage = 'Електронна пошта вже зайнята. Будь ласка, введіть іншу.';
+      error: (res) => {
+        if (res.error.detail == 'The same email is already taken. Please, use a different one.') {
+          this.errorMessage = 'Електронна пошта вже зайнята. Будь ласка, введіть іншу.';
+        }
+        else {
+          this.errorMessage = 'Будь ласка, спробуйте пізніше.';
+        }
       }
     });
   }
