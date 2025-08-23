@@ -1,112 +1,203 @@
-<div class="add-spot-container">
-  <h2>Add New Spot</h2>
-
-  <form (ngSubmit)="onSubmit()" #spotForm="ngForm">
-
-    <label for="latitude">Latitude</label>
-    <input
-      type="number"
-      id="latitude"
-      name="latitude"
-      step="any"
-      [(ngModel)]="spotRequest.latitude"
-      required
-    />
-
-    <label for="longitude">Longitude</label>
-    <input
-      type="number"
-      id="longitude"
-      name="longitude"
-      step="any"
-      [(ngModel)]="spotRequest.longitude"
-      required
-    />
-
-    <label for="spotType">Spot Type</label>
-    <select
-      id="spotType"
-      name="spotType"
-      [(ngModel)]="spotRequest.type"
-      required
+<div class="flex flex-col min-h-screen lg:py-6 lg:px-24">
+  <div class="flex items-center gap-3">
+    <a
+      routerLink="/"
+      class="material-symbols-outlined font-semibold text-5xl pt-1"
+      >keyboard_return</a
     >
-      <option value="Street">Street</option>
-      <option value="Park">Park</option>
-      <option value="Indoor">Indoor</option>
-    </select>
+  </div>
+  <div class="bg-white rounded-2xl flex box-border shadow flex-wrap">
+    <div class="flex-1 min-w-full lg:min-w-[550px]">
+      <div class="px-6 py-4 md:px-16 md:py-10">
+        <h1 class="text-3xl font-semibold">Додай новий спот!</h1>
+        <p class="text-gray-600 text-lg">Не забудь поставити маркер на мапі</p>
+        <form
+          class="flex flex-col my-3"
+          (ngSubmit)="onSubmit()"
+          [formGroup]="form"
+        >
+          @let type = form.controls['type']; 
+          @let description = form.controls['description'];
 
-    <label for="description">Description</label>
-    <textarea
-      id="description"
-      name="description"
-      [(ngModel)]="spotRequest.description"
-    ></textarea>
+          <label class="text-lg" for="spotType"
+            >Обери тип споту <span class="text-red-600 text-lg">*</span></label
+          >
+          <select
+            class="border border-gray-300 px-3 py-1.5 mt-1.5 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
+            id="spotType"
+            name="spotType"
+            formControlName="type"
+            required
+          >
+            <option value="" disabled>Обери тип споту</option>
+            <option value="Street">Стріт</option>
+            <option value="Park">Парк</option>
+            <option value="Dirt">Дьорт</option>
+          </select>
 
-    <label for="skillLevel">Skill Level</label>
-    <select
-      id="skillLevel"
-      name="skillLevel"
-      [(ngModel)]="spotRequest.skillLevel"
-    >
-      <option [ngValue]="null">Select skill level</option>
-      <option value="Beginner">Beginner</option>
-      <option value="Intermediate">Intermediate</option>
-      <option value="Advanced">Advanced</option>
-    </select>
+          @if (type.touched && type.invalid) {
+          <ul class="errors-list mt-2">
+            @if (type.errors?.['required']) {
+            <li class="error-message text-red-600">Тип споту обов'язковий.</li>
+            }
+          </ul>
+          }
 
-    <label class="checkbox-label">
-      <input
-        type="checkbox"
-        name="isCovered"
-        [(ngModel)]="spotRequest.isCovered"
-      />
-      Covered
-    </label>
+          <label class="text-lg mt-2" for="description"
+            >Опиши спот своїми словами
+            <span class="text-red-600 text-lg">*</span></label
+          >
+          <textarea
+            class="border border-gray-300 px-4 py-1.5 mt-1.5 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors duration-200 resize-y placeholder-gray-400 h-24"
+            name="description"
+            id="description"
+            formControlName="description"
+            placeholder="Коротко опиши спот.."
+            minlength="10"
+            maxlength="1000"
+          ></textarea>
 
-    <label class="checkbox-label">
-      <input
-        type="checkbox"
-        name="lighting"
-        [(ngModel)]="spotRequest.lighting"
-      />
-      Has Lighting
-    </label>
+          @if (description.touched && description.invalid) {
+          <ul class="errors-list mt-2">
+            @if (description.errors?.['required']) {
+            <li class="error-message text-red-600">Опис споту обов'язковий.</li>
+            } @if (!description.errors?.['required'] &&
+            description.errors?.['minlength']) {
+            <li class="error-message text-red-600">
+              Довжина опису має бути щонайменше 10 символів.
+            </li>
+            } @if (description.errors?.['maxlength']) {
+            <li class="error-message text-red-600">
+              Довжина опису не має перевищувати 1000 символів.
+            </li>
+            }
+          </ul>
+          }
 
-    <label for="accessibility">Accessibility</label>
-    <select
-      id="accessibility"
-      name="accessibility"
-      [(ngModel)]="spotRequest.accessibility"
-    >
-      <option [ngValue]="null">Select accessibility</option>
-      <option value="Public">Public</option>
-      <option value="Private">Private</option>
-      <option value="Restricted">Restricted</option>
-    </select>
+          <div class="flex items-center mt-3 flex-wrap gap-x-4 gap-y-2">
+            <label class="text-lg"
+              >Завантаж хоча б одне фото (.jpg, .jpeg, .png, .webp)
+              <span class="text-red-600 text-lg">*</span></label
+            >
 
-    <label for="condition">Condition</label>
-    <select
-      id="condition"
-      name="condition"
-      [(ngModel)]="spotRequest.condition"
-    >
-      <option [ngValue]="null">Select condition</option>
-      <option value="New">New</option>
-      <option value="Good">Good</option>
-      <option value="Worn">Worn</option>
-      <option value="Damaged">Damaged</option>
-    </select>
+            <input
+              id="fileInput"
+              type="file"
+              class="hidden"
+              accept=".jpg,.jpeg,.png,.webp"
+              multiple
+              (change)="onFilesSelected($event)"
+            />
 
-    <label for="images">Images</label>
-    <input
-      type="file"
-      id="images"
-      (change)="onFilesSelected($event)"
-      multiple
-    />
+            <label
+              for="fileInput"
+              class="cursor-pointer border border-gray-300 bg-white hover:bg-blue-50 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors duration-200 text-gray-700 px-8 py-1"
+            >
+              Обрати файли
+            </label>
+          </div>
 
-    <button type="submit" [disabled]="!spotForm.form.valid">
-      Add Spot
-    </button>
-  </form>
+          <ul class="mt-1 text-gray-600 list-inside">
+            @for (file of files; track $index) {
+            <li>{{ file.name }}</li>
+            }
+          </ul>
+
+          @if (imageErrors) {
+            <ul class="mt-1 text-red-600 list-inside sm:text-base">
+              @for (error of imageErrors; track $index) {
+                <li class="break-words">{{ error }}</li>
+              }
+            </ul>
+          }
+
+          <div class="flex flex-wrap gap-x-4 gap-y-1 mt-3">
+            <div class="flex items-center">
+              <label for="isCovered" class="text-lg"> Чи критий? </label>
+              <input
+                type="checkbox"
+                name="isCovered"
+                id="isCovered"
+                class="appearance-none w-5 h-5 ml-3 border border-gray-300 rounded checked:bg-blue-500 checked:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 flex-shrink-0"
+                formControlName="isCovered"
+              />
+            </div>
+
+            <div class="flex items-center">
+              <label for="lighting" class="text-lg"> Чи є освітлення? </label>
+              <input
+                type="checkbox"
+                name="lighting"
+                id="lighting"
+                class="appearance-none w-5 h-5 ml-3 border border-gray-300 rounded checked:bg-blue-500 checked:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 flex-shrink-0"
+                formControlName="lighting"
+              />
+            </div>
+          </div>
+
+          <label class="text-lg mt-4" for="skillLevel"
+            >Обери рівень складності</label
+          >
+          <select
+            class="border border-gray-300 px-3 py-1.5 mt-1.5 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
+            id="skillLevel"
+            name="skillLevel"
+            formControlName="skillLevel"
+          >
+            <option [ngValue]="null">Обери рівень складності</option>
+            <option value="Beginner">Початківець</option>
+            <option value="Intermediate">Середній</option>
+            <option value="Advanced">Продвинутий</option>
+          </select>
+
+          <label class="text-lg mt-3" for="skillLevel"
+            >Обери рівень доступності</label
+          >
+          <select
+            class="border border-gray-300 px-3 py-1.5 mt-1.5 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
+            id="accessibility"
+            name="accessibility"
+            formControlName="accessibility"
+          >
+            <option [ngValue]="null">Обери рівень доступності</option>
+            <option value="Public">Публічний</option>
+            <option value="Private">Приватний</option>
+            <option value="DIY">DIY</option>
+            <option value="Chargeable">Платний</option>
+            <option value="Unknown">Невідомо</option>
+          </select>
+
+          <label class="text-lg mt-3" for="skillLevel">Обери стан</label>
+          <select
+            class="border border-gray-300 px-3 py-1.5 mt-1.5 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
+            id="condition"
+            name="condition"
+            formControlName="condition"
+          >
+            <option [ngValue]="null">Обери стан</option>
+            <option value="Good">Хороший</option>
+            <option value="Damaged">Пошкоджений</option>
+            <option value="NeedsRepair">Потребує ремонту</option>
+            <option value="NotRideable">Некатабельний</option>
+          </select>
+
+          @if (errorMessage) {
+            <span class="error-message text-lg text-red-600 mt-3">{{ errorMessage }}</span>
+          }
+
+          <button
+            class="mt-9 bg-blue-600 text-white h-14 text-lg hover:bg-blue-700 hover:shadow-md transition-colors duration-200 cursor-pointer"
+            type="submit"
+          >
+            Додати
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="flex-1 min-h-[500px] min-w-full lg:min-w-[500px]">
+      <div class="h-full overflow-hidden xl:rounded-r-2xl">
+        <app-clickable-map (coordinates)="onCoordinatesSelected($event)"></app-clickable-map>
+      </div>
+    </div>
+  </div>
 </div>

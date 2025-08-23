@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SpotResponse } from '../../../core/spot/spot-response.model';
 import { SpotService } from '../../../core/spot/spot.service';
+import { CityResponse } from '../../../core/city/city.model';
 
 @Component({
   selector: 'app-city-spots',
@@ -10,6 +11,7 @@ import { SpotService } from '../../../core/spot/spot.service';
   styleUrl: './city-spots.component.scss'
 })
 export class CitySpotsComponent implements OnInit {
+  city!: CityResponse;
   cityId: string = '';
   spots: SpotResponse[] = [];
   spotService: SpotService = inject(SpotService);
@@ -28,14 +30,22 @@ export class CitySpotsComponent implements OnInit {
 
       this.cityId = id;
 
-      this.spotService.getSpotsByCityId(this.cityId).subscribe({
-        next: (spots) => this.spots = spots,
-        error: (err) => console.error(err)
-      });
+      const reload = history.state['reload'] ?? false;
+
+      if (reload || this.spots.length === 0) {
+        this.spotService.getSpotsByCityId(this.cityId).subscribe({
+          next: (spots) => this.spots = spots,
+          error: (err) => console.error(err)
+        });
+      }
     });
   }
 
   navigateToSpotDetails(spot: SpotResponse) {
     this.router.navigate(['/spots', spot.id], { state: { spot } });
+  }
+
+  navigateToAddNewSpot() {
+    this.router.navigate([`/cities/${this.cityId}/spots/add`]);
   }
 }
