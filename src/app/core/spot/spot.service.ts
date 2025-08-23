@@ -31,6 +31,7 @@ export class SpotService {
   }
 
   private buildSpotRequestObject(request: SpotRequest) : FormData {
+    console.log(request)
     const formData = new FormData();
 
     formData.append('cityId', request.cityId);
