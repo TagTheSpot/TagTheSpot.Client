@@ -43,7 +43,7 @@ export class ClickableMapComponent implements AfterViewInit {
       center: ukraineCenter,
       zoom: 6,
       minZoom: 6,
-      maxZoom: 16,
+      maxZoom: 18,
       maxBounds: ukraineBounds, 
       maxBoundsViscosity: 1.0
     });

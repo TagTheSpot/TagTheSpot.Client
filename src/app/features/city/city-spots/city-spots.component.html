@@ -1,24 +1,53 @@
-<div class="spots-grid">
-  <button (click)="navigateToAddNewSpot()">Додати новий спот!</button>
-
-  @for (spot of spots; track $index) {
-    <div class="spot-card" (click)="navigateToSpotDetails(spot)">
-      <div class="spot-image-wrapper">
-        <img
-          [src]="spot.imagesUrls[0]"
-          alt="Spot image"
-          class="spot-image"
-        />
+<div class="flex flex-col p-6 md:py-8 md:px-14 min-h-screen">
+  <div class="flex flex-wrap justify-between items-center">
+    <div class="flex items-center w-full sm:w-auto justify-center">
+      <a
+        routerLink="/"
+        class="material-symbols-outlined font-semibold text-3xl lg:text-5xl pt-1"
+        >keyboard_return</a
+      >
+      @if (cityName) {
+        <h2 class="text-2xl lg:text-4xl font-medium ml-3">{{ cityName }}, Україна</h2>
+      }
+    </div>
+    @if (spots.length > 0) {
+      <div class="w-full sm:w-auto flex justify-center text-center">
+        <h3 class="text-lg lg:text-2xl text-gray-500 hover:underline hover:cursor-pointer" (click)="navigateToAddNewSpot()">Бажаєш додати новий спот?</h3>
       </div>
-
-      <div class="spot-info">
-        <h3 class="spot-type">{{ spot.type }}</h3>
-        <p class="spot-description">{{ spot.description }}</p>
-
-        @if (spot.skillLevel) {
-          <span class="spot-skill">{{ spot.skillLevel }}</span>
+    }
+  </div>
+  @if (spots.length > 0) {
+    <div class="flex flex-col mt-5 lg:p-6 gap-8 lg:gap-10">
+      @for (spot of spots; track $index) {
+        <div class="flex flex-wrap border border-gray-300 rounded-2xl hover:ring-2 hover:ring-blue-400 hover:cursor-pointer
+          focus:ring-2 focus:ring-blue-500 focus:outline-none
+          transition-all duration-200" (click)="navigateToSpotDetails(spot)">
+          <img class="w-full h-52 sm:h-80 overflow-hidden rounded-t-2xl md:rounded-t-none sm:flex-1 sm:min-w-[320px] md:rounded-l-2xl object-cover" [src]="spot.imagesUrls[0]" [alt]="`Картинка для ${$index + 1} споту`" />
+          <div class="flex flex-col justify-center text-center w-full sm:flex-1 sm:min-w-[55%] rounded-b-2xl md:rounded-bl-none md:rounded-r-2xl px-7 py-5 bg-white">
+            <h3 class="font-semibold text-xl mb-3">
+              @if (spot.type == '0') {
+                Стріт
+              } @else if (spot.type == '1') {
+                Парк
+              } @else {
+                Дьорт
+              }
+            </h3>
+            <p class="line-clamp-4 md:line-clamp-non mb-3">{{ spot.description }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="flex items-center justify-center flex-1 flex-col text-center p-5">
+      <h1 class="font-medium text-lg sm:text-xl lg:text-2xl">
+        @if (cityName) {
+          На жаль, спотів у місті {{ cityName }} не знайдено :(
+        } @else {
+          На жаль, спотів у цьому місті не знайдено :(
         }
-      </div>
+      </h1>
+      <h3 class="mt-4 pb-4 md:pb-16 text-md sm:text-lg lg:text-xl hover:underline hover:cursor-pointer" (click)="navigateToAddNewSpot()">Проте, ти можеш змінити це, натиснувши сюди!</h3>
     </div>
   }
 </div>
