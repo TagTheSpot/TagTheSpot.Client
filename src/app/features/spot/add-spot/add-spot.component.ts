@@ -18,6 +18,7 @@ export class AddSpotComponent implements OnInit {
   router = inject(Router);
   errorMessage: string = '';
   cityId: string = '';
+  cityName: string = '';
 
   form!: FormGroup;
   imageErrors: string[] = [];
@@ -37,6 +38,14 @@ export class AddSpotComponent implements OnInit {
       skillLevel: [null],
       accessibility: [null],
       condition: [null]
+    });
+
+    this.route.queryParamMap.subscribe(queryParams => {
+      const cityName = queryParams.get('cityName');
+
+      if (cityName) {
+        this.cityName = cityName;
+      }
     });
   }
 
@@ -64,7 +73,8 @@ export class AddSpotComponent implements OnInit {
     this.spotService.addSpot(spotRequest).subscribe({
       next: () => {
         this.router.navigate(['/cities', this.cityId, 'spots'], {
-          state: { reload: true }
+          state: { reload: true },
+          queryParams: { cityName: this.cityName }
         });
       },
       error: () => {

@@ -41,6 +41,8 @@ export class MainPageComponent implements OnInit {
   }
 
   selectCity(city: CityResponse): void {
-    this.router.navigate(['/cities', city.id, 'spots']);
+    this.router.navigate(['/cities', city.id, 'spots'], {
+      queryParams: { cityName: city.name }
+    });
   }
 }

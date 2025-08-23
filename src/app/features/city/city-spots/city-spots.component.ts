@@ -2,7 +2,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SpotResponse } from '../../../core/spot/spot-response.model';
 import { SpotService } from '../../../core/spot/spot.service';
-import { CityResponse } from '../../../core/city/city.model';
 
 @Component({
   selector: 'app-city-spots',
@@ -11,13 +10,12 @@ import { CityResponse } from '../../../core/city/city.model';
   styleUrl: './city-spots.component.scss'
 })
 export class CitySpotsComponent implements OnInit {
-  city!: CityResponse;
+  cityName: string = '';
   cityId: string = '';
   spots: SpotResponse[] = [];
   spotService: SpotService = inject(SpotService);
   router: Router = inject(Router);
-
-  constructor(private route: ActivatedRoute) {}
+  route: ActivatedRoute = inject(ActivatedRoute)
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -29,6 +27,14 @@ export class CitySpotsComponent implements OnInit {
       }
 
       this.cityId = id;
+
+      this.route.queryParamMap.subscribe(queryParams => {
+        const cityName = queryParams.get('cityName');
+
+        if (cityName) {
+          this.cityName = cityName;
+        }
+      });
 
       const reload = history.state['reload'] ?? false;
 
@@ -46,6 +52,8 @@ export class CitySpotsComponent implements OnInit {
   }
 
   navigateToAddNewSpot() {
-    this.router.navigate([`/cities/${this.cityId}/spots/add`]);
+    this.router.navigate([`/cities/${this.cityId}/spots/add`], {
+      queryParams: { cityName: this.cityName }
+    });
   }
 }
