@@ -53,5 +53,20 @@ export class AuthService {
   isAuthenticated(): boolean {
     return !!this.getAccessToken();
   }
+
+  getEmail(): string | null {
+    const token = this.getAccessToken();
+
+    if (!token) {
+      return null;
+    }
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload['email'] || null;
+    } catch {
+      return null;
+    }
+  }
 }
 

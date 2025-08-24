@@ -10,7 +10,7 @@ import { authGuard } from './core/auth/auth.guard';
 import { ForbiddenComponent } from './features/forbidden/forbidden.component';
 import { SubmitSpotComponent } from './features/spot/submit-spot/submit-spot.component';
 import { MySubmissionsComponent } from './features/submission/my-submissions/my-submissions.component';
-import { ServerErrorComponent } from './core/components/server-error.component/server-error.component';
+import { ServerErrorComponent } from './core/components/server-error/server-error.component';
 
 export const routes: Routes = [
     {

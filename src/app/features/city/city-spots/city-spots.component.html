@@ -1,4 +1,4 @@
-<div class="flex flex-col p-6 md:py-8 md:px-14 min-h-screen">
+<div class="flex flex-col p-6 md:py-8 md:px-14 min-h-[calc(100vh-80px)]">
   <div class="flex flex-wrap justify-between items-center">
     <div class="flex items-center w-full sm:w-auto justify-center">
       <a
@@ -39,7 +39,7 @@
       }
     </div>
   } @else {
-    <div class="flex items-center justify-center flex-1 flex-col text-center p-5">
+    <div class="flex items-center justify-center flex-1 flex-col text-center pb-4 md:pb-16">
       <h1 class="font-medium text-lg sm:text-xl lg:text-2xl">
         @if (cityName) {
           На жаль, спотів у місті {{ cityName }} не знайдено :(
@@ -47,7 +47,7 @@
           На жаль, спотів у цьому місті не знайдено :(
         }
       </h1>
-      <h3 class="mt-4 pb-4 md:pb-16 text-md sm:text-lg lg:text-xl hover:underline hover:cursor-pointer" (click)="navigateToAddNewSpot()">Проте, ти можеш змінити це, натиснувши сюди!</h3>
+      <h3 class="mt-4 text-md sm:text-lg lg:text-xl hover:underline hover:cursor-pointer" (click)="navigateToAddNewSpot()">Проте, ти можеш змінити це, натиснувши сюди!</h3>
     </div>
   }
 </div>
