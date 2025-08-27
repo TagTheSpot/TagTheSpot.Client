@@ -13,5 +13,7 @@ export interface SubmissionResponse {
     submittedAt: Date,
     accessibility: string | null,
     condition: string | null,
-    imagesUrls: string[]
+    imagesUrls: string[],
+    submissionStatus: string,
+    rejectionReason: string | null
 }

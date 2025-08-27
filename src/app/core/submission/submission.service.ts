@@ -15,7 +15,7 @@ export class SubmissionService {
   }
 
   getCurrentUserSubmissions() : Observable<SubmissionResponse[]> {
-    return this.httpClient.get<SubmissionResponse[]>('https://localhost:18003/api/submissions/mine');
+    return this.httpClient.get<SubmissionResponse[]>('https://localhost:18002/api/submissions/mine');
   }
 
   rejectSubmission(request: RejectSubmissionRequest) : Observable<any> {

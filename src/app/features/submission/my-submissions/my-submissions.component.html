@@ -1,33 +1,64 @@
-<div class="submissions-container">
-  <h1>My Submissions</h1>
+<div class="px-8 py-8 lg:pt-12 pb-0 lg:px-[15%] min-h-[calc(100vh-80px)] flex flex-col">
+   
+    <h1 class="font-medium text-3xl lg:text-4xl mb-7 lg:mb-10">Мої заявки</h1>
 
-  @if (!submissions?.length) {
-    <div class="empty-message">
-        You haven't submitted any spots yet.
-    </div>
-  }
-  @else {
-    <div class="submissions-grid">
-        @for (submission of submissions; track $index) {
-            <div class="submission-card">
-                <div class="submission-images">
-                    @for (url of submission.imagesUrls; track $index) {
-                        <img [src]="url" alt="Spot image" />
-                    }
+    <div class="flex flex-col flex-1">
+        @if (submissions && submissions.length > 0) {
+            @for (submission of submissions; track $index) {
+                <div class="flex gap-6 md:gap-8 lg:gap-10">
+                    <div class="flex-0 lg:flex-3 hidden lg:block mb-4">
+                        <h3 class="font-semibold text-lg">
+                            @if (isToday(submission.submittedAt)) {
+                                Сьогодні
+                            } @else if (isYesterday(submission.submittedAt)) {
+                                Вчора
+                            } @else {
+                                {{ pluralizeDays(daysAgo(submission.submittedAt)) }}
+                            }
+                        </h3>
+                        <p class="text-gray-400 text-md">{{ submission.submittedAt | date: 'dd.MM.yyyy' }}</p>
+                    </div>
+                    <div class="flex flex-col items-center lg:mr-8">
+                        <div class="w-2 h-2 bg-gray-400 rounded-3xl"></div>
+                        <div class="h-full flex-1 border-[1px] border-gray-300"></div>
+                    </div>
+                    <div class="flex-10 border border-gray-300 rounded-xl px-8 py-6 mb-10 h-fit bg-white
+                                hover:ring-2 hover:ring-blue-400 hover:cursor-pointer
+                                focus:ring-2 focus:ring-blue-500 focus:outline-none
+                                transition-all duration-200" (click)="navigateToSubmissionDetails(submission.id)">
+                        <div class="flex flex-col sm:flex-row justify-between">
+                            <div class="sm:max-w-2/3">
+                                <p class="text-gray-400">{{ submission.submittedAt | date: 'HH:mm dd.MM.yyyy' }}</p>
+                                <h4 class="font-semibold text-lg">{{ submission.spotType }}</h4>
+                                <p class="text-md font-light line-clamp-6 lg:line-clamp-4">{{ submission.description }}</p>
+                            </div>
+                            <div class="flex flex-col lg:items-center">
+                                <img 
+                                class="hidden sm:block w-28 aspect-square object-cover rounded-lg"
+                                [src]="submission.imagesUrls[0]" 
+                                alt=""
+                                >
+                                <div class="mt-2 text-md lg:text-sm">
+                                    @if (submission.submissionStatus == 'Pending') {
+                                        <p class="text-gray-400">Розглядається..</p>
+                                    } @else if (submission.submissionStatus == 'Approved') {
+                                        <p class="text-green-700">Підтверджено</p>
+                                    } @else if (submission.submissionStatus == 'Rejected') {
+                                        <p class="text-red-600">Відхилено</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="submission-info">
-                    <h2>{{ submission.cityName }} ({{ submission.spotType }})</h2>
-                    <p><strong>Submitted:</strong> {{ submission.submittedAt | date:'medium' }}</p>
-                    <p><strong>Skill Level:</strong> {{ submission.skillLevel || 'N/A' }}</p>
-                    <p><strong>Accessibility:</strong> {{ submission.accessibility || 'N/A' }}</p>
-                    <p><strong>Condition:</strong> {{ submission.condition || 'N/A' }}</p>
-                    <p><strong>Covered:</strong> {{ submission.isCovered ? 'Yes' : 'No' }}</p>
-                    <p><strong>Lighting:</strong> {{ submission.lighting ? 'Yes' : 'No' }}</p>
-                    <p class="description">{{ submission.description }}</p>
-                </div>
+            }
+        } @else {
+            <div class="flex items-center justify-center flex-1 flex-col text-center pb-28 md:pb-48">
+                <h1 class="font-medium text-xl lg:text-2xl h-full">
+                    На жаль, поки тут нічого немає.
+                </h1>
+                <h3 class="mt-4 text-md sm:text-lg lg:text-xl hover:underline hover:cursor-pointer" routerLink="/">Проте, ти можеш змінити це, натиснувши сюди і обравши місто!</h3>
             </div>
         }
     </div>
-  }
 </div>
