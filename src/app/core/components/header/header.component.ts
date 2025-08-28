@@ -12,7 +12,11 @@ export class HeaderComponent {
   authService = inject(AuthService);
   router = inject(Router);
   isMenuOpen = false;
+isAdminDropdownOpen = false;
 
+toggleAdminDropdown() {
+  this.isAdminDropdownOpen = !this.isAdminDropdownOpen;
+}
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
