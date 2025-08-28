@@ -1,27 +1,38 @@
-<div class="pending-submissions">
-  <h2>Pending Submissions</h2>
+<div class="px-8 py-8 lg:pt-12 pb-0 lg:px-[15%] min-h-[calc(100vh-80px)] flex flex-col">
+    <h1 class="font-medium text-3xl lg:text-4xl mb-7 lg:mb-10">Очікуючі заявки</h1>
 
-  @if (pendingSubmissions === null) {
-    <div class="loading">
-        Loading submissions...
-    </div>
-  }
-  
-  @if (pendingSubmissions && pendingSubmissions.length === 0) {
-    <div class="empty">
-        No pending submissions 🎉
-    </div>
-  }
-  @else {
-    <ul class="submission-list">
-        @for (submission of pendingSubmissions; track $index) {
-        <div class="submission-info">
-          <p>Date: {{ submission.submittedAt | date:'short' }}</p>
-        </div>
-        <button class="view-btn" (click)="router.navigate(['/submissions', submission.id])">
-          View
-        </button>
+    <div class="flex flex-col flex-1">
+        @if (pendingSubmissions && pendingSubmissions.length > 0) {
+            @for (submission of pendingSubmissions; track $index) {
+                <div class="flex">
+                    <div class="flex-1 border border-gray-300 rounded-xl px-8 py-6 mb-8 h-fit bg-white
+                        hover:ring-2 hover:ring-blue-400 hover:cursor-pointer
+                        focus:ring-2 focus:ring-blue-500 focus:outline-none
+                        transition-all duration-200">
+                        <div class="flex flex-col sm:flex-row justify-between gap-5">
+                            <div class="sm:max-w-2/3">
+                                <p class="text-gray-400">Додано в {{ submission.submittedAt | date: 'HH:mm dd.MM.yyyy' }}</p>
+                                <h4 class="font-semibold text-lg">{{ submission.spotType }}</h4>
+                                <p class="text-md font-light line-clamp-6 lg:line-clamp-4">{{ submission.description }}</p>
+                            </div>
+                            <div class="flex lg:items-center">
+                                <img 
+                                class="w-48 block lg:w-32 aspect-square object-cover rounded-lg"
+                                [src]="submission.imagesUrls[0]" 
+                                alt=""
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        } @else {
+            <div class="flex items-center justify-center flex-1 flex-col text-center pb-28 md:pb-48">
+                <h1 class="font-medium text-xl lg:text-2xl h-full">
+                    Поки тут нічого немає..
+                </h1>
+                <h3 class="mt-4 text-md sm:text-lg lg:text-xl">Зачекаємо поки хтось додасть новий спот.</h3>
+            </div>
         }
-    </ul>
-  }
+    </div>
 </div>
