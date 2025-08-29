@@ -15,7 +15,8 @@ export class CitySpotsComponent implements OnInit {
   spots: SpotResponse[] = [];
   spotService: SpotService = inject(SpotService);
   router: Router = inject(Router);
-  route: ActivatedRoute = inject(ActivatedRoute)
+  route: ActivatedRoute = inject(ActivatedRoute);
+  showConfirm = false;
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -54,6 +55,42 @@ export class CitySpotsComponent implements OnInit {
   navigateToAddNewSpot() {
     this.router.navigate([`/cities/${this.cityId}/spots/add`], {
       queryParams: { cityName: this.cityName }
+    });
+  }
+
+  selectedSpot: SpotResponse | null = null;
+
+  openConfirm(spot: SpotResponse) {
+    this.selectedSpot = spot;
+    this.showConfirm = true;
+  }
+
+  closeConfirm() {
+    this.showConfirm = false;
+    this.selectedSpot = null;
+  }
+
+  confirmDelete() {
+    const id = this.selectedSpot?.id;
+    if (!id) return;
+
+    // optimistic remove so UI feels instant
+    const prev = this.spots;
+    this.spots = this.spots.filter(s => s.id !== id);
+
+    this.spotService.deleteSpot(id).subscribe({
+      next: () => {
+        this.spotService.getSpotsByCityId(this.cityId).subscribe({
+          next: spots => (this.spots = spots),
+          error: err => console.error('Failed to reload spots', err)
+        });
+        this.closeConfirm();
+      },
+      error: err => {
+        console.error(err);
+        this.spots = prev;
+        alert('Не вдалося видалити спот по невідомій причині.');
+      }
     });
   }
 }

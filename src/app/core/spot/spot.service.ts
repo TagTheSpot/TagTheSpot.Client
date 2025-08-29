@@ -30,6 +30,16 @@ export class SpotService {
     return this.httpClient.post<string>('https://localhost:18002/api/spots/submit', formData);
   }
 
+  deleteSpot(spotId: string) : Observable<any> {
+    return this.httpClient.delete<any>('https://localhost:18002/api/spots', 
+      { 
+        params: {
+          id: spotId
+        }
+      }
+    );
+  }
+
   private buildSpotRequestObject(request: SpotRequest) : FormData {
     const formData = new FormData();
 

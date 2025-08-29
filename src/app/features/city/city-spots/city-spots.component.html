@@ -3,23 +3,23 @@
     <div class="flex items-center w-full sm:w-auto justify-center">
       <a
         routerLink="/"
-        class="material-symbols-outlined font-semibold text-3xl lg:text-5xl pt-1"
+        class="material-symbols-outlined text-3xl lg:text-4xl pt-1"
         >keyboard_return</a
       >
       @if (cityName) {
-        <h2 class="text-2xl lg:text-4xl font-medium ml-3">{{ cityName }}, Україна</h2>
+        <h2 class="text-2xl lg:text-3xl ml-3">{{ cityName }}, Україна</h2>
       }
     </div>
     @if (spots.length > 0) {
       <div class="w-full sm:w-auto flex justify-center text-center">
-        <h3 class="text-lg lg:text-2xl text-gray-500 hover:underline hover:cursor-pointer" (click)="navigateToAddNewSpot()">Бажаєш додати новий спот?</h3>
+        <h3 class="text-lg lg:text-xl font-normal text-gray-500 hover:underline hover:cursor-pointer" (click)="navigateToAddNewSpot()">Бажаєш додати новий спот?</h3>
       </div>
     }
   </div>
   @if (spots.length > 0) {
-    <div class="flex flex-col mt-5 lg:p-6 gap-8 lg:gap-10">
+    <div class="flex flex-col mt-6 lg:mt-3 lg:p-6 gap-8 lg:gap-10">
       @for (spot of spots; track $index) {
-        <div class="flex flex-wrap border border-gray-300 rounded-2xl hover:ring-2 hover:ring-blue-400 hover:cursor-pointer
+        <div class="relative  flex flex-wrap border border-gray-300 rounded-2xl hover:ring-2 hover:ring-blue-400 hover:cursor-pointer
           focus:ring-2 focus:ring-blue-500 focus:outline-none
           transition-all duration-200" (click)="navigateToSpotDetails(spot)">
           <img class="w-full h-52 sm:h-80 overflow-hidden rounded-t-2xl md:rounded-t-none sm:flex-1 sm:min-w-[320px] md:rounded-l-2xl object-cover" [src]="spot.imagesUrls[0]" [alt]="`Картинка для ${$index + 1} споту`" />
@@ -33,7 +33,37 @@
                 Дьорт
               }
             </h3>
-            <p class="line-clamp-4 md:line-clamp-non mb-3">{{ spot.description }}</p>
+            <p class="line-clamp-4 md:line-clamp-non mb-6">{{ spot.description }}</p>
+            <button type="button"
+              aria-label="Видалити спот"
+              class="material-symbols-outlined text-red-700 text-2xl lg:text-3xl absolute bottom-4 right-4 z-10 hover:text-red-900 hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-400 rounded-full"
+              (click)="$event.stopPropagation(); openConfirm(spot)">
+              delete
+            </button>
+          </div>
+        </div>
+      }
+
+      @if (showConfirm) {
+        <div class="fixed inset-0 bg-transparent backdrop-blur-sm flex items-center justify-center z-50"
+            (click)="closeConfirm()">
+          <div class="bg-white rounded-2xl w-11/12 max-w-lg p-6 flex flex-col items-center shadow-lg"
+              role="dialog" aria-modal="true"
+              (click)="$event.stopPropagation()">
+            <span class="material-symbols-outlined text-red-700 text-5xl mb-4">warning</span>
+            <h2 class="text-xl font-semibold mb-5 lg:mb-8 text-center">
+              Ви впевнені, що хочете видалити цей спот?
+            </h2>
+            <div class="flex flex-wrap justify-center gap-4">
+              <button class="px-4 py-2 bg-red-700 text-white rounded-2xl hover:bg-red-900 hover:cursor-pointer transition"
+                (click)="confirmDelete()">
+                Так, видалити
+              </button>
+              <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded-2xl hover:bg-gray-400 hover:cursor-pointer transition"
+                (click)="closeConfirm()">
+                Відмінити
+              </button>
+            </div>
           </div>
         </div>
       }
