@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SpotResponse } from '../../../core/spot/spot-response.model';
 import { SpotService } from '../../../core/spot/spot.service';
+import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-city-spots',
@@ -14,9 +15,11 @@ export class CitySpotsComponent implements OnInit {
   cityId: string = '';
   spots: SpotResponse[] = [];
   spotService: SpotService = inject(SpotService);
+  toastService: ToastService = inject(ToastService);
   router: Router = inject(Router);
   route: ActivatedRoute = inject(ActivatedRoute);
   showConfirm = false;
+  loading = false;
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -40,10 +43,7 @@ export class CitySpotsComponent implements OnInit {
       const reload = history.state['reload'] ?? false;
 
       if (reload || this.spots.length === 0) {
-        this.spotService.getSpotsByCityId(this.cityId).subscribe({
-          next: (spots) => this.spots = spots,
-          error: (err) => console.error(err)
-        });
+        this.loadSpots();
       }
     });
   }
@@ -72,24 +72,41 @@ export class CitySpotsComponent implements OnInit {
 
   confirmDelete() {
     const id = this.selectedSpot?.id;
-    if (!id) return;
 
+    if (!id) {
+      return;
+    }
+
+    this.loading = true;
     // optimistic remove so UI feels instant
     const prev = this.spots;
     this.spots = this.spots.filter(s => s.id !== id);
 
     this.spotService.deleteSpot(id).subscribe({
       next: () => {
-        this.spotService.getSpotsByCityId(this.cityId).subscribe({
-          next: spots => (this.spots = spots),
-          error: err => console.error('Failed to reload spots', err)
-        });
+        this.loadSpots();
         this.closeConfirm();
+        this.toastService.show('✅ Спот успішно видалено!')
       },
       error: err => {
         console.error(err);
         this.spots = prev;
+        this.loading = false;
         alert('Не вдалося видалити спот по невідомій причині.');
+      }
+    });
+  }
+
+  private loadSpots() {
+    this.loading = true;
+    this.spotService.getSpotsByCityId(this.cityId).subscribe({
+      next: spots => {
+        this.spots = spots;
+        this.loading = false;
+      },
+      error: err => {
+        console.error(err);
+        this.loading = false;
       }
     });
   }

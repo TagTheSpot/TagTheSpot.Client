@@ -3,7 +3,35 @@
     <h1 class="font-medium text-3xl mb-7 lg:mb-10">Мої заявки</h1>
 
     <div class="flex flex-col flex-1">
-        @if (submissions && submissions.length > 0) {
+        @if (loading) {
+            @for (i of [0,1,2]; track $index) {
+                <div class="flex gap-6 md:gap-8 lg:gap-10 animate-pulse">
+                    <div class="flex-0 lg:flex-3 hidden lg:block mb-4 space-y-2">
+                        <div class="h-6 bg-gray-300 rounded w-24"></div>
+                        <div class="h-4 bg-gray-200 rounded w-20"></div>
+                    </div>
+                    <div class="flex flex-col items-center lg:mr-8">
+                        <div class="w-2 h-2 bg-gray-400 rounded-3xl"></div>
+                        <div class="h-full flex-1 border-[1px] border-gray-300"></div>
+                    </div>
+
+                    <div class="flex-10 border border-gray-300 rounded-xl px-8 py-6 mb-10 h-fit bg-white space-y-4">
+                        <div class="flex flex-col sm:flex-row justify-between gap-4">
+                        <div class="sm:max-w-2/3 space-y-2">
+                            <div class="h-4 bg-gray-300 rounded w-1/3"></div>
+                            <div class="h-5 bg-gray-300 rounded w-1/2"></div>
+                            <div class="h-4 bg-gray-200 rounded w-full"></div>
+                            <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+                        </div>
+                        <div class="flex flex-col lg:items-center space-y-2">
+                            <div class="hidden sm:block w-28 h-28 bg-gray-200 rounded-lg"></div>
+                            <div class="h-4 bg-gray-200 rounded w-20"></div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            } 
+        } @else if (submissions && submissions.length > 0) {
             @for (submission of submissions; track $index) {
                 <div class="flex gap-6 md:gap-8 lg:gap-10">
                     <div class="flex-0 lg:flex-3 hidden lg:block mb-4">

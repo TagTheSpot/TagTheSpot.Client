@@ -14,8 +14,10 @@ export class MySubmissionsComponent implements OnInit {
   submissionService = inject(SubmissionService);
   router = inject(Router);
   submissions: SubmissionResponse[] | null = null;
+  loading = false;
 
   ngOnInit(): void {
+    this.loading = true;
     this.submissionService.getCurrentUserSubmissions().subscribe({
       next: (submissions) => {
         this.submissions = submissions;
@@ -96,9 +98,12 @@ export class MySubmissionsComponent implements OnInit {
             rejectionReason: 'Shit.'
           }
         ] as SubmissionResponse[];
+
+        this.loading = false;
       },
       error: (error) => {
         console.log(error);
+        this.loading = false;
       }
     })
   }
