@@ -4,6 +4,7 @@ import { SpotService } from '../../../core/spot/spot.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ClickableMapComponent } from '../../../shared/components/clickable-map/clickable-map.component';
+import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-add-spot',
@@ -14,6 +15,7 @@ import { ClickableMapComponent } from '../../../shared/components/clickable-map/
 export class AddSpotComponent implements OnInit {
   fb = inject(FormBuilder);
   spotService = inject(SpotService);
+  toastService = inject(ToastService);
   route = inject(ActivatedRoute);
   router = inject(Router);
   errorMessage: string = '';
@@ -72,6 +74,7 @@ export class AddSpotComponent implements OnInit {
 
     this.spotService.addSpot(spotRequest).subscribe({
       next: () => {
+        this.toastService.show('✅ Спот успішно додано!');
         this.router.navigate(['/cities', this.cityId, 'spots'], {
           state: { reload: true },
           queryParams: { cityName: this.cityName }

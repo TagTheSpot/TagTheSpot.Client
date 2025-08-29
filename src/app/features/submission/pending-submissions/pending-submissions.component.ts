@@ -14,8 +14,10 @@ export class PendingSubmissionsComponent implements OnInit {
   submissionService = inject(SubmissionService);
   pendingSubmissions: SubmissionResponse[] | null = null;
   router = inject(Router);
+  loading = false;
 
   ngOnInit(): void {
+    this.loading = true;
     this.submissionService.getPendingSubmissions().subscribe({
       next: (submissions) => {
         this.pendingSubmissions = submissions;
@@ -95,11 +97,14 @@ export class PendingSubmissionsComponent implements OnInit {
             rejectionReason: 'Shit.'
           }
         ] as SubmissionResponse[];
+        
+        this.loading = false;
       },
       error: (err) => {
+        this.loading = false;
+        
         if (err.status === 403) {
           this.router.navigate(['/forbidden']);
-          
         }
         else {
           console.log(`Unknown error: ${err}`);

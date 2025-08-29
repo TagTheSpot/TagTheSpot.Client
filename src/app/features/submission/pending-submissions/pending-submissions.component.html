@@ -2,7 +2,26 @@
     <h1 class="font-medium text-3xl mb-7 lg:mb-10">Очікуючі заявки</h1>
 
     <div class="flex flex-col flex-1">
-        @if (pendingSubmissions && pendingSubmissions.length > 0) {
+        @if (loading) {
+            @for (i of [0,1,2]; track i) {
+                <div class="flex">
+                    <div class="flex-1 border border-gray-200 rounded-xl px-8 py-6 mb-8 h-fit bg-white animate-pulse">
+                        <div class="flex flex-col sm:flex-row justify-between gap-5">
+                        <div class="sm:max-w-2/3 space-y-3">
+                            <div class="h-4 w-40 bg-gray-200 rounded"></div>
+                            <div class="h-5 w-56 bg-gray-200 rounded"></div>
+                            <div class="h-4 w-full bg-gray-200 rounded"></div>
+                            <div class="h-4 w-5/6 bg-gray-200 rounded"></div>
+                        </div>
+                        <div class="flex lg:items-center">
+                            <div class="w-48 lg:w-32 aspect-square bg-gray-200 rounded-lg"></div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        @else if (pendingSubmissions && pendingSubmissions.length > 0) {
             @for (submission of pendingSubmissions; track $index) {
                 <div class="flex">
                     <div class="flex-1 border border-gray-300 rounded-xl px-8 py-6 mb-8 h-fit bg-white
