@@ -12,18 +12,19 @@ export class HeaderComponent {
   authService = inject(AuthService);
   router = inject(Router);
   isMenuOpen = false;
-isAdminDropdownOpen = false;
+  isAdminDropdownOpen = false;
 
-toggleAdminDropdown() {
-  this.isAdminDropdownOpen = !this.isAdminDropdownOpen;
-}
+  toggleAdminDropdown() {
+    this.isAdminDropdownOpen = !this.isAdminDropdownOpen;
+  }
+  
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
   logout() {
     this.toggleMenu();
-    this.authService.logout();
+    this.authService.removeTokens();
     this.router.navigate([this.router.url]);
   }
 

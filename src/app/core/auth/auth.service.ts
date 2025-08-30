@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private accessTokenKey = 'accessToken';
+  private refreshTokenKey = 'refreshToken';
 
   constructor(private http: HttpClient) {}
 
@@ -25,16 +27,16 @@ export class AuthService {
 
   storeTokens(access: string, refresh: string) {
     localStorage.setItem(this.accessTokenKey, access);
-    localStorage.setItem('refreshToken', refresh);
+    localStorage.setItem(this.refreshTokenKey, refresh);
   }
 
   getAccessToken(): string | null {
     return localStorage.getItem(this.accessTokenKey);
   }
 
-  logout() {
+  removeTokens() {
     localStorage.removeItem(this.accessTokenKey);
-    localStorage.removeItem('refreshToken');
+    localStorage.removeItem(this.refreshTokenKey);
   }
 
   hasAnyRole(roles: string[]): boolean {
@@ -82,6 +84,25 @@ export class AuthService {
     } catch {
       return null;
     }
+  }
+
+  getRefreshToken(): string | null {
+    return localStorage.getItem(this.refreshTokenKey);
+  }
+
+  refreshToken() {
+    const refreshToken = this.getRefreshToken();
+
+    if (!refreshToken) {
+      return throwError(() => new Error('No refresh token'));
+    }
+
+    return this.http.post<{ accessToken: string; refreshToken: string }>(
+      'https://localhost:18001/api/refresh-token',
+      { refreshToken }
+    ).pipe(
+      tap(tokens => this.storeTokens(tokens.accessToken, tokens.refreshToken))
+    );
   }
 }
 
