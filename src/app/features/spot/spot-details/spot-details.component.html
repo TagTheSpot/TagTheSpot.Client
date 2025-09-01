@@ -1,32 +1,74 @@
-@if (spot) {
-    <div class="spot-details-container">
-        <h1 class="spot-title">{{ spot.type }}</h1>
+<div class="xl:w-9/12 ml-auto mr-auto bg-white shadow-md rounded-2xl md:px-20 md:py-14 sm:px-14 sm:py-8 px-8 py-8">
+    @if (spot) {
+        <div class="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden rounded-xl">
+            <swiper-container
+            slides-per-view="1"
+            zoom="true"
+            pagination
+            navigation
+            class="w-full h-full cursor-pointer"
+            [zoom]="{ maxRatio: 5 }"
+            >
+            @for (imageUrl of spot.imagesUrls; track $index) {
+                <swiper-slide>
+                <div class="swiper-zoom-container w-full h-full">
+                    <img [src]="imageUrl" class="w-full h-full object-contain" draggable="false" />
+                </div>
+                </swiper-slide>
+            }
+            </swiper-container>
+        </div>
 
-        <div class="spot-main">
-            <div class="spot-images">
-                @for (image of spot.imagesUrls; track $index) {
-                    <img
-                    [src]="image"
-                    alt="Spot image"
-                    class="spot-image"
-                    />
+        <h1 class="text-xl font-medium mt-7">
+            @if (spot.type == 'Street') {
+                Стріт
+            } @else if (spot.type == 'Park') {
+                Парк
+            } @else {
+                Дьорт
+            }
+        </h1>
+        <p class="mt-3">{{ spot.description }}</p>
+        <div class="my-6">
+            <app-spot-badges [spot]="spot"></app-spot-badges>
+        </div>
+        <h2 class="text-xl font-medium mb-5">Де знайти?</h2>
+        <div class="h-[300px] sm:h-[500px] min-w-full lg:min-w-[500px]">
+        <div class="h-full overflow-hidden">
+            <app-clickable-map 
+                [markerPosition]="{ lat: spot.latitude, lon : spot.longitude }"
+                [allowMarkerSet]="false"
+                [zoom]="15">
+            </app-clickable-map>
+        </div>
+        </div>
+        <div class="w-full text-end mt-3">
+            <a
+                href="https://www.google.com/maps?q={{spot.latitude}},{{spot.longitude}}"
+                target="_blank"
+                class="hover:underline text-gray-500 text-md md:text-lg">
+                Відкрити в Google Maps
+            </a>
+        </div>
+        <div class="w-full text-end mt-5 flex items-center justify-end text-gray-500 text-md">
+            <span class="material-symbols-outlined text-lg">schedule</span>
+            <p class="ml-1 text-left">
+                Створено {{ spot.createdAt | date:'H:mm dd.MM.yyyy' }}
+            </p>
+        </div>
+        
+        <!-- @if (otherSpots) {
+            <h2 class="text-xl font-semibold mt-7 text-center">Інші споти в цьому місті</h2>
+            <div class="flex flex-wrap gap-8 sm:gap-12 lg:justify-evenly items-center justify-center mt-5">
+                @for (spot of otherSpots; track $index) {
+                    <div class="aspect-square w-11/12 sm:w-1/3 sm:max-w-72 overflow-hidden hover:cursor-pointer" (click)="navigateToOtherSpot(spot)">
+                        <img 
+                        [src]="spot.imagesUrls[0]" 
+                        class="w-full h-full object-cover border border-gray-300 rounded-xl"
+                        >
+                    </div>
                 }
             </div>
-
-            <div class="spot-info">
-                <p class="spot-description">{{ spot.description }}</p>
-                <ul class="spot-meta">
-                    <li><strong>Skill Level:</strong> {{ spot.skillLevel || 'N/A' }}</li>
-                    <li><strong>Covered:</strong> {{ spot.isCovered === null ? 'Unknown' : (spot.isCovered ? 'Yes' : 'No') }}</li>
-                    <li><strong>Lighting:</strong> {{ spot.lighting === null ? 'Unknown' : (spot.lighting ? 'Yes' : 'No') }}</li>
-                    <li><strong>Accessibility:</strong> {{ spot.accessibility || 'Unknown' }}</li>
-                    <li><strong>Condition:</strong> {{ spot.condition || 'Unknown' }}</li>
-                    <li><strong>Coordinates:</strong> {{ spot.latitude }}, {{ spot.longitude }}</li>
-                    <li><strong>Created At:</strong> {{ spot.createdAt | date:'mediumDate' }}</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-}
-
-
+        } -->
+    }
+</div>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, Output, EventEmitter, AfterViewInit, Input } from '@angular/core';
 import * as L from 'leaflet';
 
 const DefaultIcon = L.icon({
@@ -26,8 +26,30 @@ export class ClickableMapComponent implements AfterViewInit {
 
   @Output() coordinates = new EventEmitter<{ lat: number; lon: number }>();
 
+  @Input() markerPosition?: { lat: number; lon: number };
+  @Input() zoom: number = 12;
+  @Input() allowMarkerSet: boolean = true;
+
   ngAfterViewInit(): void {
     this.initMap();
+    
+    if (this.markerPosition) {
+      this.setMarker(this.markerPosition.lat, this.markerPosition.lon, this.zoom);
+    }
+  }
+
+  private setMarker(lat: number, lon: number, zoomLevel?: number): void {
+    if (this.marker) {
+      this.marker.setLatLng([lat, lon]);
+    } else {
+      this.marker = L.marker([lat, lon]).addTo(this.map);
+    }
+
+    if (zoomLevel) {
+      this.map.setView([lat, lon], zoomLevel);
+    } else {
+      this.map.panTo([lat, lon]);
+    }
   }
 
   private initMap(): void {
@@ -51,17 +73,15 @@ export class ClickableMapComponent implements AfterViewInit {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(this.map);
+    
+    if (this.allowMarkerSet) {
+      this.map.on('click', (e: L.LeafletMouseEvent) => {
+        const { lat, lng } = e.latlng;
 
-    this.map.on('click', (e: L.LeafletMouseEvent) => {
-      const { lat, lng } = e.latlng;
+        this.setMarker(lat, lng);
 
-      if (this.marker) {
-        this.marker.setLatLng([lat, lng]);
-      } else {
-        this.marker = L.marker([lat, lng]).addTo(this.map);
-      }
-
-      this.coordinates.emit({ lat, lon: lng });
-    });
+        this.coordinates.emit({ lat, lon: lng });
+      });
+    }
   }
 }
