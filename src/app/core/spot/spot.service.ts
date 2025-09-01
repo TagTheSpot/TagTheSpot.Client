@@ -18,6 +18,17 @@ export class SpotService {
     return this.httpClient.get<SpotResponse>(`https://localhost:18002/api/spots/${spotId}`);
   }
 
+  getRandomSpotsByCityId(cityId: string, count: number) : Observable<SpotResponse[]> {
+    return this.httpClient.get<SpotResponse[]>('https://localhost:18002/api/spots/random',
+      {
+        params: {
+          cityId: cityId,
+          count: count
+        }
+      }
+    );
+  }
+
   addSpot(request: SpotRequest) : Observable<string> {
     const formData = this.buildSpotRequestObject(request);
 

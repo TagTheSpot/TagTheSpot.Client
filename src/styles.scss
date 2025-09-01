@@ -34,8 +34,19 @@ html, body {
 
 html {
   background-image: url('/images/background.png');
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   font-family: 'Exo 2', sans-serif;
   color: #383838;
+}
+
+.leaflet-control { 
+  z-index: 0 !important
+}
+
+.leaflet-pane { 
+  z-index: 0 !important
+}
+
+.leaflet-top, .leaflet-bottom {
+  z-index: 0 !important
 }
