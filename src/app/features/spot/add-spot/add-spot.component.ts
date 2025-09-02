@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ClickableMapComponent } from '../../../shared/components/clickable-map/clickable-map.component';
 import { ToastService } from '../../../shared/services/toast.service';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-add-spot',
@@ -15,6 +16,7 @@ import { ToastService } from '../../../shared/services/toast.service';
 export class AddSpotComponent implements OnInit {
   fb = inject(FormBuilder);
   spotService = inject(SpotService);
+  authService = inject(AuthService);
   toastService = inject(ToastService);
   route = inject(ActivatedRoute);
   router = inject(Router);
@@ -65,25 +67,48 @@ export class AddSpotComponent implements OnInit {
       invalid = true;
     }
 
-    if (this.form.invalid || invalid) return;
+    if (this.form.invalid || invalid) {
+      return;
+    } 
 
     const spotRequest: SpotRequest = {
       ...this.form.value,
       images: this.files
     };
 
-    this.spotService.addSpot(spotRequest).subscribe({
-      next: () => {
-        this.toastService.show('✅ Спот успішно додано!');
-        this.router.navigate(['/cities', this.cityId, 'spots'], {
-          state: { reload: true },
-          queryParams: { cityName: this.cityName }
-        });
-      },
-      error: () => {
-        this.errorMessage = "Будь ласка, спробуйте пізніше.";
-      }
-    });
+    const isRegularUser = this.authService.isRegularUser();
+
+    if (isRegularUser) {
+      //TODO
+      this.toastService.show('✅ Заявку успішно додано!');
+      this.router.navigate(['/submissions'], {
+        state: { reload: true }
+      });
+      // this.spotService.submitSpot(spotRequest).subscribe({
+      //   next: () => {
+      //     this.toastService.show('✅ Заявку успішно додано!');
+      //     this.router.navigate(['/submissions'], {
+      //       state: { reload: true }
+      //     });
+      //   },
+      //   error: () => {
+      //     this.errorMessage = "Будь ласка, спробуйте пізніше.";
+      //   }
+      // });
+    } else {
+      this.spotService.addSpot(spotRequest).subscribe({
+        next: () => {
+          this.toastService.show('✅ Спот успішно додано!');
+          this.router.navigate(['/cities', this.cityId, 'spots'], {
+            state: { reload: true },
+            queryParams: { cityName: this.cityName }
+          });
+        },
+        error: () => {
+          this.errorMessage = "Будь ласка, спробуйте пізніше.";
+        }
+      });
+    }
   }
 
   onFilesSelected(event: Event) {
