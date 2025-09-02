@@ -86,6 +86,12 @@ export class AuthService {
     }
   }
 
+  isRegularUser() : boolean {
+    const role = this.getRole();
+    
+    return !!role && role == 'RegularUser';
+  }
+
   getRefreshToken(): string | null {
     return localStorage.getItem(this.refreshTokenKey);
   }
