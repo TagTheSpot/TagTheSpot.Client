@@ -76,6 +76,10 @@ export class SpotService {
       formData.append('condition', request.condition.toString());
     }
 
+    if (request.skillLevel !== undefined && request.skillLevel !== null) {
+      formData.append('skillLevel', request.skillLevel.toString());
+    }
+
     request.images.forEach((file) => {
       formData.append('images', file, file.name); 
     });
