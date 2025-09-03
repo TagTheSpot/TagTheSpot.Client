@@ -9,6 +9,10 @@ import { RejectSubmissionRequest } from './reject-submission-request.model';
 })
 export class SubmissionService {
   httpClient = inject(HttpClient);
+  
+  getSubmissionById(submissionId: string) : Observable<SubmissionResponse> {
+    return this.httpClient.get<SubmissionResponse>(`https://localhost:18002/api/submissions/${submissionId}`);
+  }
 
   getPendingSubmissions() : Observable<SubmissionResponse[]> {
     return this.httpClient.get<SubmissionResponse[]>('https://localhost:18003/api/submissions/pending');

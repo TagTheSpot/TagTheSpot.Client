@@ -10,6 +10,7 @@ import { authGuard } from './core/auth/auth.guard';
 import { ForbiddenComponent } from './features/forbidden/forbidden.component';
 import { MySubmissionsComponent } from './features/submission/my-submissions/my-submissions.component';
 import { ServerErrorComponent } from './core/components/server-error/server-error.component';
+import { SubmissionDetailsComponent } from './features/submission/submission-details/submission-details.component';
 
 export const routes: Routes = [
     {
@@ -47,6 +48,12 @@ export const routes: Routes = [
         path: 'submissions',
         pathMatch: 'full',
         component: MySubmissionsComponent,
+        canActivate: [authGuard]
+    },
+    {
+        path: 'submissions/:id',
+        pathMatch: 'full',
+        component: SubmissionDetailsComponent,
         canActivate: [authGuard]
     },
     {

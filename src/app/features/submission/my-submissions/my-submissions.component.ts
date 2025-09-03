@@ -78,6 +78,6 @@ export class MySubmissionsComponent implements OnInit {
 
   navigateToSubmissionDetails(submissionId: string) {
     //TO DO
-    this.router.navigate(['/']);
+    this.router.navigate(['/submissions', submissionId]);
   }
 }
