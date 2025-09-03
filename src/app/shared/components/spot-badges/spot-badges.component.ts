@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { SpotResponse } from '../../../core/spot/spot-response.model';
+import { SubmissionResponse } from '../../../core/submission/submission-response.model';
 
 @Component({
   selector: 'app-spot-badges',
@@ -8,5 +9,5 @@ import { SpotResponse } from '../../../core/spot/spot-response.model';
   styleUrl: './spot-badges.component.scss'
 })
 export class SpotBadgesComponent {
-  @Input() spot!: SpotResponse;
+  @Input() item!: SpotResponse | SubmissionResponse;
 }
