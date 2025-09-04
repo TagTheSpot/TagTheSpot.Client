@@ -79,22 +79,17 @@ export class AddSpotComponent implements OnInit {
     const isRegularUser = this.authService.isRegularUser();
 
     if (isRegularUser) {
-      //TODO
-      this.toastService.show('✅ Заявку успішно додано!');
-      this.router.navigate(['/submissions'], {
-        state: { reload: true }
+      this.spotService.submitSpot(spotRequest).subscribe({
+        next: () => {
+          this.toastService.show('✅ Заявку успішно додано!');
+          this.router.navigate(['/submissions'], {
+            state: { reload: true }
+          });
+        },
+        error: () => {
+          this.errorMessage = "Будь ласка, спробуйте пізніше.";
+        }
       });
-      // this.spotService.submitSpot(spotRequest).subscribe({
-      //   next: () => {
-      //     this.toastService.show('✅ Заявку успішно додано!');
-      //     this.router.navigate(['/submissions'], {
-      //       state: { reload: true }
-      //     });
-      //   },
-      //   error: () => {
-      //     this.errorMessage = "Будь ласка, спробуйте пізніше.";
-      //   }
-      // });
     } else {
       this.spotService.addSpot(spotRequest).subscribe({
         next: () => {

@@ -77,7 +77,8 @@ export class MySubmissionsComponent implements OnInit {
   }
 
   navigateToSubmissionDetails(submissionId: string) {
-    //TO DO
-    this.router.navigate(['/submissions', submissionId]);
+    this.router.navigate(['/submissions', submissionId], {
+      state: { submission: this.submissions?.filter(sub => sub.id == submissionId)[0] }
+    });
   }
 }
