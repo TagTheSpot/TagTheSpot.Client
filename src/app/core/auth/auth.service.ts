@@ -92,6 +92,12 @@ export class AuthService {
     return !!role && role == 'RegularUser';
   }
 
+  hasAdminRights() : boolean {
+    const role = this.getRole();
+
+    return !!role && (role == 'Admin' || role == 'Owner');
+  }
+
   getRefreshToken(): string | null {
     return localStorage.getItem(this.refreshTokenKey);
   }

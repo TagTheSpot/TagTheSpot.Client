@@ -61,6 +61,78 @@
                 <h2 class="text-lg text-red-500 mt-4">Відмовлено без причини :(</h2>
             }
         }
+
+        @if (authService.hasAdminRights() && submission.submissionStatus == 'Pending') {
+            <div class="mt-4">
+                @if (!isRejecting) {
+                    <div class="flex flex-wrap gap-4">
+                        <button 
+                            class="border border-green-700 bg-green-100 text-green-800 hover:bg-green-200 hover:cursor-pointer font-medium px-5 py-2 shadow"
+                            (click)="approveSubmission()">
+                            Підтвердити
+                        </button>
+
+                        <button 
+                            class="border border-red-700 bg-red-100 text-red-800 hover:bg-red-200 hover:cursor-pointer font-medium px-5 py-2 shadow"
+                            (click)="toggleRejecting()">
+                            Відхилити
+                        </button>
+                    </div>
+                }
+                @if (isRejecting) {
+                    @let rejectionReason = form.controls['rejectionReason'];
+
+                    <form [formGroup]="form" class="flex flex-col mt-4">
+                        <label class="text-lg" for="rejectionReason">
+                            Вкажи причину відмови
+                            <span class="text-red-600 text-lg">*</span>
+                        </label>
+                        <textarea
+                            class="border border-red-400 px-4 py-3 mt-1.5 placeholder-gray-400 h-24"
+                            name="rejectionReason"
+                            id="rejectionReason"
+                            formControlName="rejectionReason"
+                            placeholder="Опиши причину відмови.."
+                            minlength="5"
+                            maxlength="500"
+                        ></textarea>
+
+                        @if (rejectionReason.touched && rejectionReason.invalid) {
+                            <ul class="errors-list mt-2">
+                                @if (rejectionReason.errors?.['required']) {
+                                    <li class="error-message text-red-600">Причина відмови обов'язкова.</li>
+                                }
+                                @if (rejectionReason.errors?.['minlength']) {
+                                    <li class="error-message text-red-600">Довжина повинна бути щонайменше 5 символів.</li>
+                                }
+                                @if (rejectionReason.errors?.['maxlength']) {
+                                    <li class="error-message text-red-600">Довжина не повинна перевищувати 500 символів.</li>
+                                }
+                            </ul>
+                        }
+
+                        <div class="flex gap-4 mt-4">
+                            <button 
+                                type="button"
+                                class="border border-red-700 bg-red-100 text-red-800 hover:bg-red-200 font-medium px-5 py-2 shadow"
+                                (click)="submitRejection()">
+                                Відправити відмову
+                            </button>
+                            <button 
+                                type="button"
+                                class="border border-gray-400 bg-gray-100 text-gray-800 hover:bg-gray-200 font-medium px-5 py-2 shadow"
+                                (click)="toggleRejecting()">
+                                Скасувати
+                            </button>
+                        </div>
+                    </form>
+                }
+
+                @if (errorMessage) {
+                    <p class="text-lg text-red-500 mt-4">{{ errorMessage }}</p>
+                }
+            </div>
+        }
         
         <div class="w-full text-end mt-5 flex items-center justify-end text-gray-500 text-md">
             <span class="material-symbols-outlined text-lg">schedule</span>

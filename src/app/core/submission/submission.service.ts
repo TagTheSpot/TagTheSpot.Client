@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { SubmissionResponse } from './submission-response.model';
 import { RejectSubmissionRequest } from './reject-submission-request.model';
 
@@ -19,7 +19,13 @@ export class SubmissionService {
   }
 
   getCurrentUserSubmissions() : Observable<SubmissionResponse[]> {
-    return this.httpClient.get<SubmissionResponse[]>('https://localhost:18002/api/submissions/mine');
+    return this.httpClient.get<SubmissionResponse[]>('https://localhost:18002/api/submissions/mine')
+      .pipe(
+        map(submissions => submissions
+          .map(sub => ({ ...sub, submittedAt: new Date(sub.submittedAt) }))
+          .sort((a, b) => b.submittedAt.getTime() - a.submittedAt.getTime())
+        )
+      );
   }
 
   rejectSubmission(request: RejectSubmissionRequest) : Observable<any> {
@@ -27,6 +33,8 @@ export class SubmissionService {
   }
 
   approveSubmission(submissionId: string) : Observable<any> {
-    return this.httpClient.patch<any>('https://localhost:18003/api/submissions/approve', submissionId);
+    return this.httpClient.patch<any>('https://localhost:18003/api/submissions/approve', 
+      JSON.stringify(submissionId),
+      { headers: { 'Content-Type': 'application/json' } });
   }
 }

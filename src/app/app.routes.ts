@@ -15,12 +15,10 @@ import { SubmissionDetailsComponent } from './features/submission/submission-det
 export const routes: Routes = [
     {
         path: 'login',
-        pathMatch: 'full',
         component: LoginComponent
     },
     {
         path: 'register',
-        pathMatch: 'full',
         component: RegisterComponent
     },
     {
@@ -28,49 +26,45 @@ export const routes: Routes = [
         pathMatch: 'full',
         component: MainPageComponent
     },
-    { 
-        path: 'cities/:id/spots' ,
-        pathMatch: 'full',
+    {
+        path: 'cities/:id/spots',
         component: CitySpotsComponent
     },
     {
         path: 'cities/:id/spots/add',
-        pathMatch: 'full',
         component: AddSpotComponent,
         canActivate: [authGuard]
     },
     {
         path: 'spots/:id',
-        pathMatch: 'full',
         component: SpotDetailsComponent
     },
     {
-        path: 'submissions',
-        pathMatch: 'full',
-        component: MySubmissionsComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'submissions/:id',
-        pathMatch: 'full',
-        component: SubmissionDetailsComponent,
-        canActivate: [authGuard]
-    },
-    {
         path: 'submissions/pending',
-        pathMatch: 'full',
         component: PendingSubmissionsComponent,
         canActivate: [authGuard],
         data: { roles: ['Admin', 'Owner'] }
     },
     {
+        path: 'submissions',
+        component: MySubmissionsComponent,
+        canActivate: [authGuard]
+    },
+    {
+        path: 'submissions/:id',
+        component: SubmissionDetailsComponent,
+        canActivate: [authGuard]
+    },
+    {
         path: 'forbidden',
-        pathMatch: 'full',
         component: ForbiddenComponent
     },
     {
         path: 'server-error',
-        pathMatch: 'full',
         component: ServerErrorComponent
     },
+    {
+        path: '**',
+        redirectTo: ''
+    }
 ];
