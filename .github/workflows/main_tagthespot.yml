@@ -27,8 +27,8 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: node-app
-          path: .
+          name: build
+          path: dist/TagTheSpot.Client/browser
 
   deploy:
     runs-on: ubuntu-latest
@@ -38,10 +38,10 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: node-app
+          name: build
       
       - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'tagthespot'
@@ -49,4 +49,3 @@ jobs:
           package: .
 
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C4F8D302EB9947A4A2143688F381FC40 }}
-
