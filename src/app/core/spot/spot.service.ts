@@ -3,23 +3,25 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SpotResponse } from './spot-response.model';
 import { SpotRequest } from './spot-request.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SpotService {
   httpClient: HttpClient = inject(HttpClient);
+  private baseUrl = environment.spotServiceUrl;
 
   getSpotsByCityId(cityId: string) : Observable<SpotResponse[]> {
-    return this.httpClient.get<SpotResponse[]>(`https://localhost:18002/api/cities/${cityId}/spots`);
+    return this.httpClient.get<SpotResponse[]>(`${this.baseUrl}/api/cities/${cityId}/spots`);
   }
 
   getSpotById(spotId: string) : Observable<SpotResponse> {
-    return this.httpClient.get<SpotResponse>(`https://localhost:18002/api/spots/${spotId}`);
+    return this.httpClient.get<SpotResponse>(`${this.baseUrl}/api/spots/${spotId}`);
   }
 
   getRandomSpotsByCityId(cityId: string, count: number) : Observable<SpotResponse[]> {
-    return this.httpClient.get<SpotResponse[]>('https://localhost:18002/api/spots/random',
+    return this.httpClient.get<SpotResponse[]>(`${this.baseUrl}/api/spots/random`,
       {
         params: {
           cityId: cityId,
@@ -32,17 +34,17 @@ export class SpotService {
   addSpot(request: SpotRequest) : Observable<string> {
     const formData = this.buildSpotRequestObject(request);
 
-    return this.httpClient.post<string>('https://localhost:18002/api/spots', formData);
+    return this.httpClient.post<string>(`${this.baseUrl}/api/spots`, formData);
   }
 
   submitSpot(request: SpotRequest) : Observable<string> {
     const formData = this.buildSpotRequestObject(request);
 
-    return this.httpClient.post<string>('https://localhost:18002/api/spots/submit', formData);
+    return this.httpClient.post<string>(`${this.baseUrl}/api/spots/submit`, formData);
   }
 
   deleteSpot(spotId: string) : Observable<any> {
-    return this.httpClient.delete<any>('https://localhost:18002/api/spots', 
+    return this.httpClient.delete<any>(`${this.baseUrl}/api/spots`, 
       { 
         params: {
           id: spotId
