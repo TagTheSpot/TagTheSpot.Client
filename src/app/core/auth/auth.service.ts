@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,19 +9,20 @@ import { tap, throwError } from 'rxjs';
 export class AuthService {
   private accessTokenKey = 'accessToken';
   private refreshTokenKey = 'refreshToken';
+  private baseUrl = environment.userServiceUrl;
 
   constructor(private http: HttpClient) {}
 
   login(email: string, password: string) {
     return this.http.post<{ accessToken: string; refreshToken: string }>(
-      'https://localhost:18001/api/login',
+      `${this.baseUrl}/api/login`,
       { email, password }
     );
   }
 
   register(email: string, password: string) {
     return this.http.post(
-      'https://localhost:18001/api/register',
+      `${this.baseUrl}/api/register`,
       { email, password }
     )
   }
@@ -110,7 +112,7 @@ export class AuthService {
     }
 
     return this.http.post<{ accessToken: string; refreshToken: string }>(
-      'https://localhost:18001/api/refresh-token',
+      `${this.baseUrl}/api/refresh-token`,
       { refreshToken }
     ).pipe(
       tap(tokens => this.storeTokens(tokens.accessToken, tokens.refreshToken))

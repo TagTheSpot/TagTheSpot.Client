@@ -3,23 +3,26 @@ import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { SubmissionResponse } from './submission-response.model';
 import { RejectSubmissionRequest } from './reject-submission-request.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubmissionService {
   httpClient = inject(HttpClient);
+  private moderationBaseUrl = environment.moderationServiceUrl;
+  private spotBaseUrl = environment.spotServiceUrl;
   
   getSubmissionById(submissionId: string) : Observable<SubmissionResponse> {
-    return this.httpClient.get<SubmissionResponse>(`https://localhost:18002/api/submissions/${submissionId}`);
+    return this.httpClient.get<SubmissionResponse>(`${this.spotBaseUrl}/api/submissions/${submissionId}`);
   }
 
   getPendingSubmissions() : Observable<SubmissionResponse[]> {
-    return this.httpClient.get<SubmissionResponse[]>('https://localhost:18003/api/submissions/pending');
+    return this.httpClient.get<SubmissionResponse[]>(`${this.moderationBaseUrl}/api/submissions/pending`);
   }
 
   getCurrentUserSubmissions() : Observable<SubmissionResponse[]> {
-    return this.httpClient.get<SubmissionResponse[]>('https://localhost:18002/api/submissions/mine')
+    return this.httpClient.get<SubmissionResponse[]>(`${this.spotBaseUrl}/api/submissions/mine`)
       .pipe(
         map(submissions => submissions
           .map(sub => ({ ...sub, submittedAt: new Date(sub.submittedAt) }))
@@ -29,11 +32,11 @@ export class SubmissionService {
   }
 
   rejectSubmission(request: RejectSubmissionRequest) : Observable<any> {
-    return this.httpClient.patch<any>('https://localhost:18003/api/submissions/reject', request);
+    return this.httpClient.patch<any>(`${this.moderationBaseUrl}/api/submissions/reject`, request);
   }
 
   approveSubmission(submissionId: string) : Observable<any> {
-    return this.httpClient.patch<any>('https://localhost:18003/api/submissions/approve', 
+    return this.httpClient.patch<any>(`${this.moderationBaseUrl}/api/submissions/approve`, 
       JSON.stringify(submissionId),
       { headers: { 'Content-Type': 'application/json' } });
   }
