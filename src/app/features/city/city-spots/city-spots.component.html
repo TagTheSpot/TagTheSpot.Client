@@ -49,12 +49,14 @@
               }
             </h3>
             <p class="line-clamp-4 md:line-clamp-non mb-6">{{ spot.description }}</p>
-            <button type="button"
-              aria-label="Видалити спот"
-              class="material-symbols-outlined text-red-700 text-2xl lg:text-3xl absolute bottom-4 right-4 z-10 hover:text-red-900 hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-400 rounded-full"
-              (click)="$event.stopPropagation(); openConfirm(spot)">
-              delete
-            </button>
+            @if (authService.hasAdminRights()) {
+              <button type="button"
+                aria-label="Видалити спот"
+                class="material-symbols-outlined text-red-700 text-2xl lg:text-3xl absolute bottom-4 right-4 z-10 hover:text-red-900 hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-400 rounded-full"
+                (click)="$event.stopPropagation(); openConfirm(spot)">
+                delete
+              </button>
+            }
           </div>
         </div>
       }

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SpotResponse } from '../../../core/spot/spot-response.model';
 import { SpotService } from '../../../core/spot/spot.service';
 import { ToastService } from '../../../shared/services/toast.service';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-city-spots',
@@ -16,6 +17,7 @@ export class CitySpotsComponent implements OnInit {
   spots: SpotResponse[] = [];
   spotService: SpotService = inject(SpotService);
   toastService: ToastService = inject(ToastService);
+  authService: AuthService = inject(AuthService);
   router: Router = inject(Router);
   route: ActivatedRoute = inject(ActivatedRoute);
   showConfirm = false;
