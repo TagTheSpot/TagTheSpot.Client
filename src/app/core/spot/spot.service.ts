@@ -44,13 +44,7 @@ export class SpotService {
   }
 
   deleteSpot(spotId: string) : Observable<any> {
-    return this.httpClient.delete<any>(`${this.baseUrl}/api/spots`, 
-      { 
-        params: {
-          id: spotId
-        }
-      }
-    );
+    return this.httpClient.delete<any>(`${this.baseUrl}/api/spots/${spotId}`);
   }
 
   private buildSpotRequestObject(request: SpotRequest) : FormData {
