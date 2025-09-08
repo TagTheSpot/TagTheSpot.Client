@@ -20,6 +20,13 @@ export class AuthService {
     );
   }
 
+  signInWithGoogle(googleIdToken: string) {
+    return this.http.post<{ accessToken: string; refreshToken: string }>(
+      `${this.baseUrl}/api/google-login`,
+      { googleIdToken }
+    );
+  }
+
   register(email: string, password: string) {
     return this.http.post(
       `${this.baseUrl}/api/register`,

@@ -1,7 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, NgZone, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/auth/auth.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { environment } from '../../../../environments/environment'
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,7 @@ export class LoginComponent implements OnInit {
   authService = inject(AuthService);
   router = inject(Router);
   route = inject(ActivatedRoute); 
+  ngZone = inject(NgZone);
   errorMessage: string | null = null;
   returnUrl: string | null = null;
 
@@ -41,6 +43,43 @@ export class LoginComponent implements OnInit {
     this.form.valueChanges.subscribe(() => {
       this.errorMessage = '';
     })
+
+    this.initGoogleSignIn();
+  }
+
+  private initGoogleSignIn(): void {
+    // @ts-ignore
+    google.accounts.id.initialize({
+      client_id: environment.googleClientId,
+      callback: (response: any) => this.ngZone.run(() => this.handleGoogleResponse(response))
+    });
+
+    // @ts-ignore
+    google.accounts.id.renderButton(
+      document.getElementById('googleButton'),
+      {
+        theme: 'outline',
+        size: 'large',
+        text: 'signin_with',
+        logo_alignment: 'center',
+        shape: 'pill',
+        width: '100%'
+      }
+    );
+  }
+
+  handleGoogleResponse(response: any) {
+    const idToken = response.credential;
+
+    this.authService.signInWithGoogle(idToken).subscribe({
+      next: res => {
+        this.router.navigateByUrl(this.returnUrl || '/');
+        this.authService.storeTokens(res.accessToken, res.refreshToken);
+      },
+      error: () => {
+        this.errorMessage = 'Не вдалося увійти через Google. Спробуйте пізніше.';
+      }
+    });
   }
 
   onSubmit() {
