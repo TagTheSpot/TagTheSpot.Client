@@ -86,8 +86,13 @@ export class AddSpotComponent implements OnInit {
             state: { reload: true }
           });
         },
-        error: () => {
-          this.errorMessage = "Будь ласка, спробуйте пізніше.";
+        error: (err) => {
+          if (err.error.detail == 'The description contains unsafe content.') {
+            this.errorMessage = "Опис містить небезпечний вміст. Будь ласка, змініть його та спробуйте ще раз.";
+          }
+          else {
+            this.errorMessage = "Будь ласка, спробуйте пізніше.";
+          }
         }
       });
     } else {
