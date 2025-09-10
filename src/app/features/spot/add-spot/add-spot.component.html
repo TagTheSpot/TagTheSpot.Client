@@ -5,8 +5,8 @@
       class="material-symbols-outlined font-normal text-3xl lg:text-4xl pt-1"
       >keyboard_return</a
     >
-    @if (cityName) {
-      <h2 class="text-2xl lg:text-3xl font-normal ml-3">{{ cityName }}, Україна</h2>
+    @if (cityData) {
+      <h2 class="text-2xl lg:text-3xl font-normal ml-3">{{ cityData.name }}, Україна</h2>
     }
   </div>
   <div class="bg-white rounded-2xl flex box-border shadow flex-wrap">
@@ -198,8 +198,12 @@
       </div>
     </div>
     <div class="flex-1 min-h-[500px] min-w-full lg:min-w-[500px]">
-      <div class="h-full overflow-hidden xl:rounded-r-2xl ">
-        <app-clickable-map (coordinates)="onCoordinatesSelected($event)"></app-clickable-map>
+      <div class="h-full overflow-hidden xl:rounded-r-2xl">
+        <app-clickable-map
+          [preloadedMarkerPositions]="spotsMarkers"
+          [center]="cityData ? { lat: cityData.latitude, lon: cityData.longitude } : undefined"
+          (coordinates)="onCoordinatesSelected($event)">
+        </app-clickable-map>
       </div>
     </div>
   </div>

@@ -55,9 +55,7 @@ export class CitySpotsComponent implements OnInit {
   }
 
   navigateToAddNewSpot() {
-    this.router.navigate([`/cities/${this.cityId}/spots/add`], {
-      queryParams: { cityName: this.cityName }
-    });
+    this.router.navigate([`/cities/${this.cityId}/spots/add`]);
   }
 
   selectedSpot: SpotResponse | null = null;
