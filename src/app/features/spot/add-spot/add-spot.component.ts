@@ -6,6 +6,8 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ClickableMapComponent } from '../../../shared/components/clickable-map/clickable-map.component';
 import { ToastService } from '../../../shared/services/toast.service';
 import { AuthService } from '../../../core/auth/auth.service';
+import { CityService } from '../../../core/city/city.service';
+import { CityResponse } from '../../../core/city/city.model';
 
 @Component({
   selector: 'app-add-spot',
@@ -16,13 +18,15 @@ import { AuthService } from '../../../core/auth/auth.service';
 export class AddSpotComponent implements OnInit {
   fb = inject(FormBuilder);
   spotService = inject(SpotService);
+  cityService = inject(CityService);
   authService = inject(AuthService);
   toastService = inject(ToastService);
   route = inject(ActivatedRoute);
   router = inject(Router);
   errorMessage: string = '';
   cityId: string = '';
-  cityName: string = '';
+  cityData: CityResponse | null = null;
+  spotsMarkers: { lat: number; lon: number }[] = [];
 
   form!: FormGroup;
   imageErrors: string[] = [];
@@ -44,11 +48,14 @@ export class AddSpotComponent implements OnInit {
       condition: [null]
     });
 
-    this.route.queryParamMap.subscribe(queryParams => {
-      const cityName = queryParams.get('cityName');
-
-      if (cityName) {
-        this.cityName = cityName;
+    this.cityService.getCitySpotsCoordinatesByCityId(this.cityId).subscribe({
+      next: (res) => {
+        this.cityData = res.city;
+        this.spotsMarkers = res.spotsCoordinates?.map(c => ({ lat: c.latitude, lon: c.longitude })) ?? [];
+      },
+      error: (err) => {
+        console.log(err);
+        console.log('Unknown error happened during sending a request to the API.');
       }
     });
   }
@@ -107,7 +114,7 @@ export class AddSpotComponent implements OnInit {
           this.toastService.show('✅ Спот успішно додано!');
           this.router.navigate(['/cities', this.cityId, 'spots'], {
             state: { reload: true },
-            queryParams: { cityName: this.cityName }
+            queryParams: { cityName: this.cityData?.name }
           });
         },
         error: (err) => {

@@ -36,7 +36,7 @@
         <div class="h-[300px] sm:h-[500px] min-w-full lg:min-w-[500px]">
         <div class="h-full overflow-hidden">
             <app-clickable-map 
-                [markerPosition]="{ lat: submission.latitude, lon : submission.longitude }"
+                [userMarkerPosition]="{ lat: submission.latitude, lon : submission.longitude }"
                 [allowMarkerSet]="false"
                 [zoom]="15">
             </app-clickable-map>
