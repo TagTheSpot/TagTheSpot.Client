@@ -90,6 +90,12 @@ export class AddSpotComponent implements OnInit {
           if (err.error.detail == 'The description contains unsafe content.') {
             this.errorMessage = "Опис містить небезпечний вміст. Будь ласка, змініть його та спробуйте ще раз.";
           }
+          else if (err.error.detail == 'The coordinates of the location are outside of the requested city.') {
+            this.errorMessage = "Спот розташований поза межами обраного міста.";
+          }
+          else if (err.error.detail == 'The coordinates of the location are too close to another existing spot/submission.') {
+            this.errorMessage = "Спот розташований занадто близько до іншого існуючого споту або заявки.";
+          }
           else {
             this.errorMessage = "Будь ласка, спробуйте пізніше.";
           }
@@ -104,8 +110,14 @@ export class AddSpotComponent implements OnInit {
             queryParams: { cityName: this.cityName }
           });
         },
-        error: () => {
-          this.errorMessage = "Будь ласка, спробуйте пізніше.";
+        error: (err) => {
+          if (err.error.detail == 'The coordinates of the spot are outside of the requested city.') {
+            this.errorMessage = "Спот розташований поза межами обраного міста.";
+          } else if (err.error.detail == 'The coordinates of the spot are too close to another existing spot/submission.') {
+            this.errorMessage = "Спот розташований занадто близько до іншого існуючого споту або заявки.";
+          } else {
+            this.errorMessage = "Будь ласка, спробуйте пізніше.";
+          }
         }
       });
     }
