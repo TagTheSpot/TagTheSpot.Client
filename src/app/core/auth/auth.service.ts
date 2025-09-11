@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { tap, throwError } from 'rxjs';
+import { Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -124,6 +124,13 @@ export class AuthService {
     ).pipe(
       tap(tokens => this.storeTokens(tokens.accessToken, tokens.refreshToken))
     );
+  }
+
+  confirmEmail(userId: string, token: string) : Observable<any> {
+    return this.http.post(`${this.baseUrl}/api/confirm-email`, {
+      userId: userId,
+      token: token
+    })
   }
 }
 
