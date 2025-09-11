@@ -11,6 +11,7 @@ import { ForbiddenComponent } from './features/forbidden/forbidden.component';
 import { MySubmissionsComponent } from './features/submission/my-submissions/my-submissions.component';
 import { ServerErrorComponent } from './core/components/server-error/server-error.component';
 import { SubmissionDetailsComponent } from './features/submission/submission-details/submission-details.component';
+import { ConfirmEmailComponent } from './features/auth/confirm-email/confirm-email.component';
 
 export const routes: Routes = [
     {
@@ -20,6 +21,10 @@ export const routes: Routes = [
     {
         path: 'register',
         component: RegisterComponent
+    },
+    {
+        path: 'confirm-email',
+        component: ConfirmEmailComponent
     },
     {
         path: '',
