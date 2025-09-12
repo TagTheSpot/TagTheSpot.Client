@@ -27,6 +27,9 @@ export class AddSpotComponent implements OnInit {
   cityId: string = '';
   cityData: CityResponse | null = null;
   spotsMarkers: { lat: number; lon: number }[] = [];
+  mapCenter?: { lat: number; lon: number };
+  userMarkerPosition?: { lat: number; lon: number };
+  mapZoom: number = 13;
 
   form!: FormGroup;
   imageErrors: string[] = [];
@@ -51,6 +54,7 @@ export class AddSpotComponent implements OnInit {
     this.cityService.getCitySpotsCoordinatesByCityId(this.cityId).subscribe({
       next: (res) => {
         this.cityData = res.city;
+        this.mapCenter = { lat: res.city.latitude, lon: res.city.longitude };
         this.spotsMarkers = res.spotsCoordinates?.map(c => ({ lat: c.latitude, lon: c.longitude })) ?? [];
       },
       error: (err) => {
@@ -178,5 +182,32 @@ export class AddSpotComponent implements OnInit {
       latitude: coords.lat,
       longitude: coords.lon
     });
+  }
+
+  locateMe() {
+    if (!navigator.geolocation) {
+      alert('Геолокація не підтримується вашим браузером.');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        console.log(`User's location: Latitude ${lat}, Longitude ${lon}`);
+
+        this.mapCenter = { lat, lon };
+        this.mapZoom = 17;
+        this.userMarkerPosition = { lat, lon };
+
+        this.form.patchValue({
+          latitude: lat,
+          longitude: lon
+        });
+      },
+      () => alert('Не вдалося отримати вашу локацію'),
+      { enableHighAccuracy: true }
+    );
   }
 }
