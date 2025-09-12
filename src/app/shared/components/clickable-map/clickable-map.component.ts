@@ -66,6 +66,16 @@ export class ClickableMapComponent implements AfterViewInit {
       this.clearPreloadedMarkers();
       this.addPreloadedMarkers();
     }
+
+    if (changes['userMarkerPosition']) {
+      if (this.userMarkerPosition) {
+        this.addUserMarker(this.userMarkerPosition.lat, this.userMarkerPosition.lon);
+      }
+    }
+
+    if (changes['zoom']) {
+      this.setCenterAndZoom();
+    }
   }
 
   private addPreloadedMarkers(): void {
