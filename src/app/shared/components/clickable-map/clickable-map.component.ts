@@ -4,7 +4,7 @@ import * as L from 'leaflet';
 
 const UserMarkerIcon = L.icon({
   iconUrl: 'icons/leaflet/marker-icon-red.png',
-  iconRetinaUrl: 'icons/leaflet/marker-icon-red-2x.png',
+  iconRetinaUrl: 'icons/leaflet/marker-icon-2x-red.png',
   shadowUrl: 'icons/leaflet/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
