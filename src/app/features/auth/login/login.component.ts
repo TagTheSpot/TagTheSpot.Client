@@ -61,9 +61,7 @@ export class LoginComponent implements OnInit {
         theme: 'outline',
         size: 'large',
         text: 'signin_with',
-        logo_alignment: 'center',
-        shape: 'pill',
-        width: '100%'
+        shape: 'pill'
       }
     );
   }
