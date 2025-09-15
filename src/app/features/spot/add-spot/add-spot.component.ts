@@ -30,6 +30,7 @@ export class AddSpotComponent implements OnInit {
   mapCenter?: { lat: number; lon: number };
   userMarkerPosition?: { lat: number; lon: number };
   mapZoom: number = 13;
+  loading: boolean = false;
 
   form!: FormGroup;
   imageErrors: string[] = [];
@@ -49,6 +50,11 @@ export class AddSpotComponent implements OnInit {
       skillLevel: [null],
       accessibility: [null],
       condition: [null]
+    });
+
+    this.form.valueChanges.subscribe(() => {
+      this.errorMessage = '';
+      this.imageErrors = [];
     });
 
     this.cityService.getCitySpotsCoordinatesByCityId(this.cityId).subscribe({
@@ -89,6 +95,8 @@ export class AddSpotComponent implements OnInit {
 
     const isRegularUser = this.authService.isRegularUser();
 
+    this.loading = true;
+
     if (isRegularUser) {
       this.spotService.submitSpot(spotRequest).subscribe({
         next: () => {
@@ -96,10 +104,14 @@ export class AddSpotComponent implements OnInit {
           this.router.navigate(['/submissions'], {
             state: { reload: true }
           });
+          this.loading = false;
         },
         error: (err) => {
-          if (err.error.detail == 'The description contains unsafe content.') {
-            this.errorMessage = "Опис містить небезпечний вміст. Будь ласка, змініть його та спробуйте ще раз.";
+          if (err.error.detail == 'The description contains inappropriate content.') {
+            this.errorMessage = "Опис містить неприйнятний або образливий вміст. Будь ласка, відредагуйте його.";
+          }
+          else if (err.error.detail == `The description is either irrelevant or contradicts the submission's fields.`) {
+            this.errorMessage = "Опис споту є недоречним або суперечить зазначеним властивостям споту. Будь ласка, відредагуйте його відповідно до характеристик споту.";
           }
           else if (err.error.detail == 'The coordinates of the location are outside of the requested city.') {
             this.errorMessage = "Спот розташований поза межами обраного міста.";
@@ -110,6 +122,7 @@ export class AddSpotComponent implements OnInit {
           else {
             this.errorMessage = "Будь ласка, спробуйте пізніше.";
           }
+          this.loading = false;
         }
       });
     } else {
@@ -120,6 +133,7 @@ export class AddSpotComponent implements OnInit {
             state: { reload: true },
             queryParams: { cityName: this.cityData?.name }
           });
+          this.loading = false;
         },
         error: (err) => {
           if (err.error.detail == 'The coordinates of the spot are outside of the requested city.') {
@@ -129,6 +143,7 @@ export class AddSpotComponent implements OnInit {
           } else {
             this.errorMessage = "Будь ласка, спробуйте пізніше.";
           }
+          this.loading = false;
         }
       });
     }

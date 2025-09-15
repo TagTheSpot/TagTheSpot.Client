@@ -1,220 +1,232 @@
-<div class="flex flex-col min-h-screen lg:py-6 lg:px-24">
-  <div class="flex items-center lg:mb-3 p-3 justify-center lg:justify-start">
-    <a
-      routerLink="/"
-      class="material-symbols-outlined font-normal text-3xl lg:text-4xl pt-1"
-      >keyboard_return</a
-    >
-    @if (cityData) {
-      <h2 class="text-2xl lg:text-3xl font-normal ml-3">{{ cityData.name }}, Україна</h2>
-    }
-  </div>
-  <div class="bg-white rounded-2xl flex box-border shadow flex-wrap">
-    <div class="flex-1 min-w-full lg:min-w-[550px]">
-      <div class="px-6 py-4 md:px-16 md:py-10">
-        <h1 class="text-3xl font-semibold">Додай новий спот!</h1>
-        <p class="text-gray-600 text-lg">Не забудь поставити маркер на мапі</p>
-        <form
-          class="flex flex-col my-3"
-          (ngSubmit)="onSubmit()"
-          [formGroup]="form"
-        >
-          @let type = form.controls['type']; 
-          @let description = form.controls['description'];
-
-          <label class="text-lg" for="spotType"
-            >Обери тип споту <span class="text-red-600 text-lg">*</span></label
+<div class="relative flex flex-col min-h-screen lg:py-6 lg:px-24">
+  <div [class.blur-sm]="loading" class="flex-1 transition-all duration-200">
+    <div class="flex items-center lg:mb-3 p-3 justify-center lg:justify-start">
+      <a
+        routerLink="/"
+        class="material-symbols-outlined font-normal text-3xl lg:text-4xl pt-1"
+        >keyboard_return</a
+      >
+      @if (cityData) {
+        <h2 class="text-2xl lg:text-3xl font-normal ml-3">{{ cityData.name }}, Україна</h2>
+      }
+    </div>
+    <div class="bg-white rounded-2xl flex box-border shadow flex-wrap">
+      <div class="flex-1 min-w-full lg:min-w-[550px]">
+        <div class="px-6 py-4 md:px-16 md:py-10">
+          <h1 class="text-3xl font-semibold">Додай новий спот!</h1>
+          <p class="text-gray-600 text-lg">Не забудь поставити маркер на мапі</p>
+          <form
+            class="flex flex-col my-3"
+            (ngSubmit)="onSubmit()"
+            [formGroup]="form"
           >
-          <select
-            class="border border-gray-300 px-3 py-1.5 mt-1.5 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
-            id="spotType"
-            name="spotType"
-            formControlName="type"
-            required
-          >
-            <option value="" disabled>Обери тип споту</option>
-            <option value="Street">Стріт</option>
-            <option value="Park">Парк</option>
-            <option value="Dirt">Дьорт</option>
-          </select>
+            @let type = form.controls['type']; 
+            @let description = form.controls['description'];
 
-          @if (type.touched && type.invalid) {
-          <ul class="errors-list mt-2">
-            @if (type.errors?.['required']) {
-            <li class="error-message text-red-600">Тип споту обов'язковий.</li>
-            }
-          </ul>
-          }
-
-          <label class="text-lg mt-2" for="description"
-            >Опиши спот своїми словами
-            <span class="text-red-600 text-lg">*</span></label
-          >
-          <textarea
-            class="border border-gray-300 px-4 py-1.5 mt-1.5 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors duration-200 resize-y placeholder-gray-400 h-24"
-            name="description"
-            id="description"
-            formControlName="description"
-            placeholder="Коротко опиши спот.."
-            minlength="10"
-            maxlength="1000"
-          ></textarea>
-
-          @if (description.touched && description.invalid) {
-          <ul class="errors-list mt-2">
-            @if (description.errors?.['required']) {
-            <li class="error-message text-red-600">Опис споту обов'язковий.</li>
-            } @if (!description.errors?.['required'] &&
-            description.errors?.['minlength']) {
-            <li class="error-message text-red-600">
-              Довжина опису має бути щонайменше 10 символів.
-            </li>
-            } @if (description.errors?.['maxlength']) {
-            <li class="error-message text-red-600">
-              Довжина опису не має перевищувати 1000 символів.
-            </li>
-            }
-          </ul>
-          }
-
-          <div class="flex items-center mt-3 flex-wrap gap-x-4 gap-y-2">
-            <label class="text-lg"
-              >Завантаж хоча б одне фото (.jpg, .jpeg, .png, .webp)
-              <span class="text-red-600 text-lg">*</span></label
+            <label class="text-lg" for="spotType"
+              >Обери тип споту <span class="text-red-600 text-lg">*</span></label
             >
-
-            <input
-              id="fileInput"
-              type="file"
-              class="hidden"
-              accept=".jpg,.jpeg,.png,.webp"
-              multiple
-              (change)="onFilesSelected($event)"
-            />
-
-            <label
-              for="fileInput"
-              class="cursor-pointer border border-gray-300 bg-white hover:bg-blue-50 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors duration-200 text-gray-700 px-8 py-1"
+            <select
+              class="border border-gray-300 px-3 py-1.5 mt-1.5 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
+              id="spotType"
+              name="spotType"
+              formControlName="type"
+              required
             >
-              Обрати файли
-            </label>
-          </div>
+              <option value="" disabled>Обери тип споту</option>
+              <option value="Street">Стріт</option>
+              <option value="Park">Парк</option>
+              <option value="Dirt">Дьорт</option>
+            </select>
 
-          <ul class="mt-1 text-gray-600 list-inside">
-            @for (file of files; track $index) {
-            <li>{{ file.name }}</li>
-            }
-          </ul>
-
-          @if (imageErrors) {
-            <ul class="mt-1 text-red-600 list-inside sm:text-base">
-              @for (error of imageErrors; track $index) {
-                <li class="break-words">{{ error }}</li>
+            @if (type.touched && type.invalid) {
+            <ul class="errors-list mt-2">
+              @if (type.errors?.['required']) {
+              <li class="error-message text-red-600">Тип споту обов'язковий.</li>
               }
             </ul>
-          }
+            }
 
-          <div class="flex flex-wrap gap-x-4 gap-y-1 mt-3">
-            <div class="flex items-center">
-              <label for="isCovered" class="text-lg"> Чи критий? </label>
+            <label class="text-lg mt-2" for="description"
+              >Опиши спот своїми словами
+              <span class="text-red-600 text-lg">*</span></label
+            >
+            <textarea
+              class="border border-gray-300 px-4 py-1.5 mt-1.5 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors duration-200 resize-y placeholder-gray-400 h-24"
+              name="description"
+              id="description"
+              formControlName="description"
+              placeholder="Коротко опиши спот.."
+              minlength="10"
+              maxlength="1000"
+            ></textarea>
+
+            @if (description.touched && description.invalid) {
+            <ul class="errors-list mt-2">
+              @if (description.errors?.['required']) {
+              <li class="error-message text-red-600">Опис споту обов'язковий.</li>
+              } @if (!description.errors?.['required'] &&
+              description.errors?.['minlength']) {
+              <li class="error-message text-red-600">
+                Довжина опису має бути щонайменше 10 символів.
+              </li>
+              } @if (description.errors?.['maxlength']) {
+              <li class="error-message text-red-600">
+                Довжина опису не має перевищувати 1000 символів.
+              </li>
+              }
+            </ul>
+            }
+
+            <div class="flex items-center mt-3 flex-wrap gap-x-4 gap-y-2">
+              <label class="text-lg"
+                >Завантаж хоча б одне фото (.jpg, .jpeg, .png, .webp)
+                <span class="text-red-600 text-lg">*</span></label
+              >
+
               <input
-                type="checkbox"
-                name="isCovered"
-                id="isCovered"
-                class="appearance-none w-5 h-5 ml-3 border border-gray-300 rounded checked:bg-blue-500 checked:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 flex-shrink-0"
-                formControlName="isCovered"
+                id="fileInput"
+                type="file"
+                class="hidden"
+                accept=".jpg,.jpeg,.png,.webp"
+                multiple
+                (change)="onFilesSelected($event)"
               />
+
+              <label
+                for="fileInput"
+                class="cursor-pointer border border-gray-300 bg-white hover:bg-blue-50 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-colors duration-200 text-gray-700 px-8 py-1"
+              >
+                Обрати файли
+              </label>
             </div>
 
-            <div class="flex items-center">
-              <label for="lighting" class="text-lg"> Чи є освітлення? </label>
-              <input
-                type="checkbox"
-                name="lighting"
-                id="lighting"
-                class="appearance-none w-5 h-5 ml-3 border border-gray-300 rounded checked:bg-blue-500 checked:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 flex-shrink-0"
-                formControlName="lighting"
-              />
+            <ul class="mt-1 text-gray-600 list-inside">
+              @for (file of files; track $index) {
+              <li>{{ file.name }}</li>
+              }
+            </ul>
+
+            @if (imageErrors) {
+              <ul class="mt-1 text-red-600 list-inside sm:text-base">
+                @for (error of imageErrors; track $index) {
+                  <li class="break-words">{{ error }}</li>
+                }
+              </ul>
+            }
+
+            <div class="flex flex-wrap gap-x-4 gap-y-1 mt-3">
+              <div class="flex items-center">
+                <label for="isCovered" class="text-lg"> Чи критий? </label>
+                <input
+                  type="checkbox"
+                  name="isCovered"
+                  id="isCovered"
+                  class="appearance-none w-5 h-5 ml-3 border border-gray-300 rounded checked:bg-blue-500 checked:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 flex-shrink-0"
+                  formControlName="isCovered"
+                />
+              </div>
+
+              <div class="flex items-center">
+                <label for="lighting" class="text-lg"> Чи є освітлення? </label>
+                <input
+                  type="checkbox"
+                  name="lighting"
+                  id="lighting"
+                  class="appearance-none w-5 h-5 ml-3 border border-gray-300 rounded checked:bg-blue-500 checked:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 flex-shrink-0"
+                  formControlName="lighting"
+                />
+              </div>
             </div>
-          </div>
 
-          <label class="text-lg mt-4" for="skillLevel"
-            >Обери рівень складності</label
-          >
-          <select
-            class="border border-gray-300 px-3 py-1.5 mt-1.5 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
-            id="skillLevel"
-            name="skillLevel"
-            formControlName="skillLevel"
-          >
-            <option [ngValue]="null">Обери рівень складності</option>
-            <option value="Beginner">Початківець</option>
-            <option value="Intermediate">Середній</option>
-            <option value="Advanced">Продвинутий</option>
-          </select>
+            <label class="text-lg mt-4" for="skillLevel"
+              >Обери рівень складності</label
+            >
+            <select
+              class="border border-gray-300 px-3 py-1.5 mt-1.5 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
+              id="skillLevel"
+              name="skillLevel"
+              formControlName="skillLevel"
+            >
+              <option [ngValue]="null">Обери рівень складності</option>
+              <option value="Beginner">Початківець</option>
+              <option value="Intermediate">Середній</option>
+              <option value="Advanced">Продвинутий</option>
+            </select>
 
-          <label class="text-lg mt-3" for="skillLevel"
-            >Обери рівень доступності</label
-          >
-          <select
-            class="border border-gray-300 px-3 py-1.5 mt-1.5 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
-            id="accessibility"
-            name="accessibility"
-            formControlName="accessibility"
-          >
-            <option [ngValue]="null">Обери рівень доступності</option>
-            <option value="Public">Публічний</option>
-            <option value="Private">Приватний</option>
-            <option value="DIY">DIY</option>
-            <option value="Chargeable">Платний</option>
-            <option value="Unknown">Невідомо</option>
-          </select>
+            <label class="text-lg mt-3" for="skillLevel"
+              >Обери рівень доступності</label
+            >
+            <select
+              class="border border-gray-300 px-3 py-1.5 mt-1.5 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
+              id="accessibility"
+              name="accessibility"
+              formControlName="accessibility"
+            >
+              <option [ngValue]="null">Обери рівень доступності</option>
+              <option value="Public">Публічний</option>
+              <option value="Private">Приватний</option>
+              <option value="DIY">DIY</option>
+              <option value="Chargeable">Платний</option>
+              <option value="Unknown">Невідомо</option>
+            </select>
 
-          <label class="text-lg mt-3" for="skillLevel">Обери стан</label>
-          <select
-            class="border border-gray-300 px-3 py-1.5 mt-1.5 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
-            id="condition"
-            name="condition"
-            formControlName="condition"
-          >
-            <option [ngValue]="null">Обери стан</option>
-            <option value="Good">Хороший</option>
-            <option value="Damaged">Пошкоджений</option>
-            <option value="NeedsRepair">Потребує ремонту</option>
-            <option value="NotRideable">Некатабельний</option>
-          </select>
+            <label class="text-lg mt-3" for="skillLevel">Обери стан</label>
+            <select
+              class="border border-gray-300 px-3 py-1.5 mt-1.5 hover:ring-2 hover:ring-blue-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
+              id="condition"
+              name="condition"
+              formControlName="condition"
+            >
+              <option [ngValue]="null">Обери стан</option>
+              <option value="Good">Хороший</option>
+              <option value="Damaged">Пошкоджений</option>
+              <option value="NeedsRepair">Потребує ремонту</option>
+              <option value="NotRideable">Некатабельний</option>
+            </select>
 
-          @if (errorMessage) {
-            <span class="error-message text-lg text-red-600 mt-3">{{ errorMessage }}</span>
-          }
+            @if (errorMessage) {
+              <span class="error-message text-lg text-red-600 mt-3">{{ errorMessage }}</span>
+            }
 
-          <button
-            class="mt-9 bg-blue-600 text-white h-14 text-lg hover:bg-blue-700 hover:shadow-md transition-colors duration-200 cursor-pointer"
-            type="submit"
-          >
-            Додати
-          </button>
-        </form>
+            <button
+              class="mt-7 sm:mt-9 bg-blue-600 text-white h-14 text-lg hover:bg-blue-700 hover:shadow-md transition-colors duration-200 cursor-pointer"
+              type="submit"
+            >
+              Додати
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
-    <div class="flex-1 min-h-[500px] min-w-full lg:min-w-[500px]">
-      <div class="h-full overflow-hidden xl:rounded-r-2xl relative">
-        <app-clickable-map
-          [preloadedMarkerPositions]="spotsMarkers"
-          [center]="mapCenter"
-          [userMarkerPosition]="userMarkerPosition"
-          [zoom]="mapZoom"
-          (coordinates)="onCoordinatesSelected($event)">
-        </app-clickable-map>
+      <div class="flex-1 min-h-[500px] min-w-full lg:min-w-[500px]">
+        <div class="h-full overflow-hidden xl:rounded-r-2xl relative">
+          <app-clickable-map
+            [preloadedMarkerPositions]="spotsMarkers"
+            [center]="mapCenter"
+            [userMarkerPosition]="userMarkerPosition"
+            [zoom]="mapZoom"
+            (coordinates)="onCoordinatesSelected($event)">
+          </app-clickable-map>
 
-        <button 
-          (click)="locateMe()"
-          class="absolute top-4 right-4 z-[1000] w-10 h-10 flex items-center justify-center 
-                bg-white rounded-full shadow-lg border border-gray-200 
-                hover:bg-blue-50 hover:ring-2 hover:ring-blue-400 transition-all hover:cursor-pointer duration-200">
-          <span class="text-lg">📍</span>
-        </button>
+          <button 
+            (click)="locateMe()"
+            class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center 
+                  bg-white rounded-full shadow-lg border border-gray-200 
+                  hover:bg-blue-50 hover:ring-2 hover:ring-blue-400 transition-all hover:cursor-pointer duration-200">
+            <span class="text-lg">📍</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
+
+  @if (loading) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm pointer-events-auto">
+      <div class="flex justify-center items-center space-x-2">
+        <div class="w-4 h-4 bg-white animate-bounce" style="animation-delay: 0s;"></div>
+        <div class="w-4 h-4 bg-white animate-bounce" style="animation-delay: 0.2s;"></div>
+        <div class="w-4 h-4 bg-white animate-bounce" style="animation-delay: 0.4s;"></div>
+      </div>
+    </div>
+  }
 </div>
