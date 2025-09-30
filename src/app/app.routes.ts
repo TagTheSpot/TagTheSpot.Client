@@ -13,6 +13,7 @@ import { ServerErrorComponent } from './core/components/server-error/server-erro
 import { SubmissionDetailsComponent } from './features/submission/submission-details/submission-details.component';
 import { ConfirmEmailComponent } from './features/auth/confirm-email/confirm-email.component';
 import { ForgotPasswordComponent } from './features/auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './features/auth/reset-password/reset-password.component';
 
 export const routes: Routes = [
     {
@@ -30,6 +31,10 @@ export const routes: Routes = [
     {
         path: 'forgot-password',
         component: ForgotPasswordComponent
+    },
+    {
+        path: 'reset-password',
+        component: ResetPasswordComponent
     },
     {
         path: '',

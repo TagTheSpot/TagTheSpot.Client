@@ -138,5 +138,13 @@ export class AuthService {
       email: email
     });
   }
+
+  resetPassword(email: string, token: string, newPassword: string) : Observable<any> {
+    return this.http.post(`${this.baseUrl}/api/reset-password`, {
+      email: email,
+      token: token,
+      newPassword: newPassword
+    });
+  }
 }
 
