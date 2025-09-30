@@ -41,6 +41,7 @@ export class ForgotPasswordComponent {
         } else {
           this.errorMessage = 'Невідома помилка. Спробуйте пізніше.';
         }
+        this.message = null;
       },
     });
   }
