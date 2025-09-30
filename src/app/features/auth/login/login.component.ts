@@ -1,4 +1,4 @@
-import { Component, inject, NgZone, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, NgZone, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/auth/auth.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -10,7 +10,7 @@ import { environment } from '../../../../environments/environment'
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, AfterViewInit {
   authService = inject(AuthService);
   router = inject(Router);
   route = inject(ActivatedRoute); 
@@ -43,7 +43,9 @@ export class LoginComponent implements OnInit {
     this.form.valueChanges.subscribe(() => {
       this.errorMessage = '';
     })
+  }
 
+  ngAfterViewInit(): void {
     this.initGoogleSignIn();
   }
 

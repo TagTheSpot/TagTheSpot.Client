@@ -12,6 +12,7 @@ import { MySubmissionsComponent } from './features/submission/my-submissions/my-
 import { ServerErrorComponent } from './core/components/server-error/server-error.component';
 import { SubmissionDetailsComponent } from './features/submission/submission-details/submission-details.component';
 import { ConfirmEmailComponent } from './features/auth/confirm-email/confirm-email.component';
+import { ForgotPasswordComponent } from './features/auth/forgot-password/forgot-password.component';
 
 export const routes: Routes = [
     {
@@ -25,6 +26,10 @@ export const routes: Routes = [
     {
         path: 'confirm-email',
         component: ConfirmEmailComponent
+    },
+    {
+        path: 'forgot-password',
+        component: ForgotPasswordComponent
     },
     {
         path: '',
