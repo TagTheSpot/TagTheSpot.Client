@@ -102,6 +102,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
         if (res.error.detail == 'The provided credentials are invalid.') {
           this.errorMessage = 'Неправильна електронна пошта або пароль.';
         }
+        else if (res.error.detail == 'The email is not confirmed for this user.') {
+          this.errorMessage = 'Будь ласка, підтвердіть електронну пошту перед входом.';
+        }
         else {
           this.errorMessage = 'Будь ласка, спробуйте пізніше.';
         }
